@@ -1,0 +1,78 @@
+server:
+  port: 80
+
+#spring
+spring:
+  devtools:
+    restart:
+      enabled: true
+  #DATABASE CONFIG
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    username: root
+    password: 123456
+    url: jdbc:mysql://192.168.99.100:3306/awm?useUnicode=true&characterEncoding=utf-8
+    #\u8FD9\u91CC\u662F\u914D\u7F6Edruid\u8FDE\u63A5\u6C60\uFF0C\u4EE5\u4E0B\u90FD\u662Fdruid\u7684\u914D\u7F6E\u4FE1\u606F
+    type: com.alibaba.druid.pool.DruidDataSource
+    filters: stat,wall,log4j2
+    maxActive: 20
+    initialSize: 1
+    maxWait: 60000
+    minIdle: 1
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: select 'x'
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+    maxOpenPreparedStatements: 20
+    connection-properties: druid.stat.merggSql=ture;druid.stat.slowSqlMillis=5000
+    filter:
+      slf4j:
+        enabled: true
+        statement-create-after-log-enabled: false
+        statement-close-after-log-enabled: false
+        result-set-open-after-log-enabled: false
+        result-set-close-after-log-enabled: false
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 10MB
+      max-request-size: 10MB
+      file-size-threshold: 2KB
+
+
+
+
+#mybatis
+mybatis-plus:
+  mapper-locations:  classpath:/mapper/*Mapper.xml
+  #\u5B9E\u4F53\u626B\u63CF\uFF0C\u591A\u4E2Apackage\u7528\u9017\u53F7\u6216\u8005\u5206\u53F7\u5206\u9694
+  typeAliasesPackage: com.wen.mall.**.entity
+  global-config:
+    # \u6570\u636E\u5E93\u76F8\u5173\u914D\u7F6E
+    db-config:
+      #\u4E3B\u952E\u7C7B\u578B  AUTO:"\u6570\u636E\u5E93ID\u81EA\u589E", INPUT:"\u7528\u6237\u8F93\u5165ID",ID_WORKER:"\u5168\u5C40\u552F\u4E00ID (\u6570\u5B57\u7C7B\u578B\u552F\u4E00ID)", UUID:"\u5168\u5C40\u552F\u4E00ID UUID";
+      id-type: uuid
+      #\u5B57\u6BB5\u7B56\u7565 IGNORED:"\u5FFD\u7565\u5224\u65AD",NOT_NULL:"\u975E NULL \u5224\u65AD"),NOT_EMPTY:"\u975E\u7A7A\u5224\u65AD"
+      field-strategy: not_empty
+      #\u9A7C\u5CF0\u4E0B\u5212\u7EBF\u8F6C\u6362
+      column-underline: true
+      #\u6570\u636E\u5E93\u5927\u5199\u4E0B\u5212\u7EBF\u8F6C\u6362
+      #capital-mode: true
+      #\u903B\u8F91\u5220\u9664\u914D\u7F6E
+      logic-delete-value: 0
+      logic-not-delete-value: 1
+      db-type: mysql
+    #\u5237\u65B0mapper \u8C03\u8BD5\u795E\u5668
+    refresh: true
+  # \u539F\u751F\u914D\u7F6E
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: false
+
+logging.config: classpath:log4j2-spring.xml
+
+file:
+  path: C:/development/upfiles

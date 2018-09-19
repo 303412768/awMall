@@ -1,6 +1,12 @@
 package com.wen.mall.file.controller;
 
 
+import com.wen.mall.file.entity.FileStorageProperties;
+import com.wen.mall.file.entity.UploadFileResponse;
+import com.wen.mall.file.service.impl.FileStorageService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.io.Resource;
@@ -16,12 +22,13 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
  * <p>
- *  前端控制器
+ * 前端控制器
  * </p>
  *
  * @author John
@@ -30,22 +37,25 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/files")
 public class FileController {
+    private static final Logger logger = LoggerFactory.getLogger(FileController.class);
 
+    @Autowired
+    private FileStorageProperties fileStorageProperties;
 
-    @Value("${file.path}")
-    private String FILE_PATH;
-
+    @Autowired
+    private FileStorageService fileStorageService;
 
     @GetMapping("/getPath")
     public String getFilePath() {
-        return FILE_PATH;
+        return fileStorageProperties.getUploadDir();
     }
 
-   /* @PostMapping("/uploadFile")
+    @PostMapping("/uploadFile")
     public UploadFileResponse uploadFile(@RequestParam("file") MultipartFile file) {
-        String fileName = FILE_PATH + "/" + UUID.randomUUID().toString();
+        String fileName = fileStorageService.storeFile(file);
+
         String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/downloadFile/")
+                .path(fileStorageProperties.getUploadDir())
                 .path(fileName)
                 .toUriString();
 
@@ -71,11 +81,11 @@ public class FileController {
         try {
             contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
         } catch (IOException ex) {
-            *//*logger.info("Could not determine file type.");*//*
+            logger.info("Could not determine file type.");
         }
 
         // Fallback to the default content type if type could not be determined
-        if(contentType == null) {
+        if (contentType == null) {
             contentType = "application/octet-stream";
         }
 
@@ -83,5 +93,6 @@ public class FileController {
                 .contentType(MediaType.parseMediaType(contentType))
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
                 .body(resource);
-    }*/
+    }
 }
+

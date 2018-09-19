@@ -75,4 +75,4 @@ mybatis-plus:
 logging.config: classpath:log4j2-spring.xml
 
 file:
-  path: C:/development/upfiles
+  upload-dir: C:/development/upfiles/

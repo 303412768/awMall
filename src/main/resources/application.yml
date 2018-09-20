@@ -11,8 +11,8 @@ spring:
     driver-class-name: com.mysql.jdbc.Driver
     username: root
     password: 123456
-    url: jdbc:mysql://192.168.99.100:3306/awm?useUnicode=true&characterEncoding=utf-8
-    #\u8FD9\u91CC\u662F\u914D\u7F6Edruid\u8FDE\u63A5\u6C60\uFF0C\u4EE5\u4E0B\u90FD\u662Fdruid\u7684\u914D\u7F6E\u4FE1\u606F
+    url: jdbc:mysql://127.0.0.1:3306/awm?useUnicode=true&characterEncoding=utf-8&useSSL=false
+    #这里是配置druid连接池，以下都是druid的配置信息
     type: com.alibaba.druid.pool.DruidDataSource
     filters: stat,wall,log4j2
     maxActive: 20
@@ -48,26 +48,26 @@ spring:
 #mybatis
 mybatis-plus:
   mapper-locations:  classpath:/mapper/*Mapper.xml
-  #\u5B9E\u4F53\u626B\u63CF\uFF0C\u591A\u4E2Apackage\u7528\u9017\u53F7\u6216\u8005\u5206\u53F7\u5206\u9694
+  #实体扫描，多%u4E2 Apackage用逗号或者分号分隔
   typeAliasesPackage: com.wen.mall.**.entity
   global-config:
-    # \u6570\u636E\u5E93\u76F8\u5173\u914D\u7F6E
+    # 数据库相关配置
     db-config:
-      #\u4E3B\u952E\u7C7B\u578B  AUTO:"\u6570\u636E\u5E93ID\u81EA\u589E", INPUT:"\u7528\u6237\u8F93\u5165ID",ID_WORKER:"\u5168\u5C40\u552F\u4E00ID (\u6570\u5B57\u7C7B\u578B\u552F\u4E00ID)", UUID:"\u5168\u5C40\u552F\u4E00ID UUID";
+      #主键类型  AUTO:"数据库ID自增", INPUT:"用户输入ID",ID_WORKER:"全局唯一ID (数字类型唯一ID)", UUID:"全局唯一ID UUID";
       id-type: uuid
-      #\u5B57\u6BB5\u7B56\u7565 IGNORED:"\u5FFD\u7565\u5224\u65AD",NOT_NULL:"\u975E NULL \u5224\u65AD"),NOT_EMPTY:"\u975E\u7A7A\u5224\u65AD"
+      #字段策略 IGNORED:"忽略判断",NOT_NULL:"非 NULL 判断"),NOT_EMPTY:"非空判断"
       field-strategy: not_empty
-      #\u9A7C\u5CF0\u4E0B\u5212\u7EBF\u8F6C\u6362
+      #驼峰下划线转换
       column-underline: true
-      #\u6570\u636E\u5E93\u5927\u5199\u4E0B\u5212\u7EBF\u8F6C\u6362
+      #数据库大写下划线转换
       #capital-mode: true
-      #\u903B\u8F91\u5220\u9664\u914D\u7F6E
+      #逻辑删除配置
       logic-delete-value: 0
       logic-not-delete-value: 1
       db-type: mysql
-    #\u5237\u65B0mapper \u8C03\u8BD5\u795E\u5668
+    #刷新mapper 调试神器
     refresh: true
-  # \u539F\u751F\u914D\u7F6E
+  # 原生配置
   configuration:
     map-underscore-to-camel-case: true
     cache-enabled: false
@@ -75,4 +75,4 @@ mybatis-plus:
 logging.config: classpath:log4j2-spring.xml
 
 file:
-  upload-dir: C:/development/upfiles/
+  upload-dir: C:/development/upfiles

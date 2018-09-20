@@ -73,6 +73,11 @@ public class FileStorageService {
     }
 
     public Resource loadFileAsResource(String fileName) {
+        File file=this.fileService.getById(fileName);
+        if (null == file) {
+            throw new MyFileNotFoundException("File not found" + fileName);
+        }
+        fileName = file.getUuid() + "." + file.getSuffix();
         try {
             Path filePath = this.fileStorageLocation.resolve(fileName).normalize();
             Resource resource = new UrlResource(filePath.toUri());

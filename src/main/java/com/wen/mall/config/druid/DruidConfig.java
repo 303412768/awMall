@@ -1,4 +1,4 @@
-package com.wen.mall.config;
+package com.wen.mall.config.druid;
 
 import java.util.Arrays;
 import java.util.Collections;

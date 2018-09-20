@@ -1,6 +1,7 @@
 package com.wen.mall.file.controller;
 
 
+import com.wen.mall.config.bean.Result;
 import com.wen.mall.file.entity.FileStorageProperties;
 import com.wen.mall.file.entity.UploadFileResponse;
 import com.wen.mall.file.service.impl.FileStorageService;
@@ -51,20 +52,21 @@ public class FileController {
     }
 
     @PostMapping("/uploadFile")
-    public UploadFileResponse uploadFile(@RequestParam("file") MultipartFile file) {
-        String fileName = fileStorageService.storeFile(file);
+    public Result uploadFile(@RequestParam("file") MultipartFile file) {
+        String uuid = fileStorageService.storeFile(file);
 
-        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+      /*  String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(fileStorageProperties.getUploadDir())
                 .path(fileName)
-                .toUriString();
+                .toUriString();*/
 
-        return new UploadFileResponse(fileName, fileDownloadUri,
-                file.getContentType(), file.getSize());
+        /*return new UploadFileResponse(fileName, fileDownloadUri,
+                file.getContentType(), file.getSize());*/
+        return Result.success(uuid);
     }
 
     @PostMapping("/uploadMultipleFiles")
-    public List<UploadFileResponse> uploadMultipleFiles(@RequestParam("files") MultipartFile[] files) {
+    public List<Result> uploadMultipleFiles(@RequestParam("files") MultipartFile[] files) {
         return Arrays.asList(files)
                 .stream()
                 .map(file -> uploadFile(file))

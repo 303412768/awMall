@@ -44,11 +44,12 @@ public class FileStorageService {
         // Normalize file name
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
         int lastPoint=fileName.lastIndexOf(".");
+        File dbFile = new File();
         if (lastPoint > 0) {
             String name = fileName.substring(0, lastPoint);
             String suffix = fileName.substring(lastPoint + 1);
             String uuid = UUID.randomUUID().toString();
-            File dbFile = new File();
+
             dbFile.setUuid(uuid);
             dbFile.setRealName(name);
             dbFile.setSuffix(suffix);
@@ -66,7 +67,7 @@ public class FileStorageService {
             Path targetLocation = this.fileStorageLocation.resolve(fileName);
             Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
 
-            return fileName;
+            return dbFile.getUuid();
         } catch (IOException ex) {
             throw new FileStorageException("Could not store file " + fileName + ". Please try again!", ex);
         }

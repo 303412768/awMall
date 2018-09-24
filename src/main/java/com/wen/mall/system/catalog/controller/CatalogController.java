@@ -4,6 +4,7 @@ package com.wen.mall.system.catalog.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.wen.mall.config.bean.PageResult;
 import com.wen.mall.config.bean.Result;
 import com.wen.mall.system.catalog.entity.Catalog;
 import com.wen.mall.system.catalog.service.ICatalogService;
@@ -30,14 +31,14 @@ public class CatalogController {
     private ICatalogService catalogService;
 
     @GetMapping("")
-    public Page<Catalog> selectPage(@RequestParam(defaultValue = "1") Long pageNo, @RequestParam(defaultValue = "10")Long pageSize) {
+    public PageResult selectPage(@RequestParam(defaultValue = "1") Long pageNo, @RequestParam(defaultValue = "10")Long pageSize) {
         Page<Catalog> page = new Page<>(pageNo, pageSize);
 
         QueryWrapper queryWrapper = new QueryWrapper();
         queryWrapper.orderByDesc("uuid");
         page = (Page<Catalog>) catalogService.page(page, queryWrapper);
         System.out.println(page);
-        return page;
+        return PageResult.instance(page);
     }
 
     @PostMapping("/save")

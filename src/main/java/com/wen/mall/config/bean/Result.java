@@ -9,7 +9,7 @@ public class Result<T> {
     private T data;
 
     private Result(T data) {
-        this.code = 0;
+        this.code = 200;
         this.message = "成功";
         this.data = data;
     }

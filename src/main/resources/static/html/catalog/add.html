@@ -6,88 +6,17 @@
               class="am-close">&times;</span>
     </div>
     <div class="am-popup-bd">
-        <form action="/test" class="am-form" id="doc-vld-msg" data-am-validator>
+        <form action="/catalogs/save" class="am-form" method="post" id="doc-vld-msg" data-am-validator>
             <fieldset>
-                <legend>显示验证提示信息</legend>
                 <div class="am-form-group">
-                    <label for="doc-vld-name-2-1">用户名：</label>
-                    <input type="text" id="doc-vld-name-2-1" minlength="3" placeholder="输入用户名（至少 3 个字符）" required/>
+                    <label for="doc-vld-name-2-1">分类编号：</label>
+                    <input type="number" id="doc-vld-name-2-1" minlength="2" name="uuid" placeholder="分类编号（至少 2 个字符）" required/>
                 </div>
 
                 <div class="am-form-group">
-                    <label for="doc-vld-email-2-1">邮箱：</label>
-                    <input type="email" id="doc-vld-email-2-1" data-validation-message="自定义提示信息：输入地球上的电子邮箱撒"
-                           placeholder="输入邮箱" required/>
-                </div>
-
-                <div class="am-form-group">
-                    <label for="doc-vld-url-2-1">网址：</label>
-                    <input type="url" id="doc-vld-url-2-1" placeholder="输入网址" required/>
-                </div>
-
-                <div class="am-form-group">
-                    <label for="doc-vld-age-2-1">年龄：</label>
-                    <input type="number" class="" id="doc-vld-age-2-1" placeholder="输入年龄  18-120" min="18" max="120"
-                           required/>
-                </div>
-
-                <div class="am-form-group">
-                    <label class="am-form-label">爱好：</label>
-                    <label class="am-checkbox-inline">
-                        <input type="checkbox" value="橘子" name="docVlCb" minchecked="2" maxchecked="4" required> 橘子
-                    </label>
-                    <label class="am-checkbox-inline">
-                        <input type="checkbox" value="苹果" name="docVlCb"> 苹果
-                    </label>
-                    <label class="am-checkbox-inline">
-                        <input type="checkbox" value="菠萝" name="docVlCb"> 菠萝
-                    </label>
-                    <label class="am-checkbox-inline">
-                        <input type="checkbox" value="芒果" name="docVlCb"> 芒果
-                    </label>
-                    <label class="am-checkbox-inline">
-                        <input type="checkbox" value="香蕉" name="docVlCb"> 香蕉
-                    </label>
-                </div>
-
-                <div class="am-form-group">
-                    <label>性别： </label>
-                    <label class="am-radio-inline">
-                        <input type="radio" value="" name="docVlGender" required> 男
-                    </label>
-                    <label class="am-radio-inline">
-                        <input type="radio" name="docVlGender"> 女
-                    </label>
-                    <label class="am-radio-inline">
-                        <input type="radio" name="docVlGender"> 其他
-                    </label>
-                </div>
-
-                <div class="am-form-group">
-                    <label for="doc-select-1-1">下拉单选框</label>
-                    <select id="doc-select-1-1" required>
-                        <option value="">-=请选择一项=-</option>
-                        <option value="option1">选项一...</option>
-                        <option value="option2">选项二.....</option>
-                        <option value="option3">选项三........</option>
-                    </select>
-                    <span class="am-form-caret"></span>
-                </div>
-
-                <div class="am-form-group">
-                    <label for="doc-select-2-1">多选框</label>
-                    <select multiple class="" id="doc-select-2-1" minchecked="2" maxchecked="4">
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                        <option>5</option>
-                    </select>
-                </div>
-
-                <div class="am-form-group">
-                    <label for="doc-vld-ta-2-1">评论：</label>
-                    <textarea id="doc-vld-ta-2-1" minlength="10" maxlength="100"></textarea>
+                    <label for="doc-vld-email-2-1">分类名称：</label>
+                    <input type="text" id="doc-vld-email-2-1" name="name" data-validation-message="请输入分类名称"
+                           placeholder="分类名称" required/>
                 </div>
             </fieldset>
         </form>
@@ -100,7 +29,13 @@
     submitForm = function () {
         var validResult = $('#doc-vld-msg').validator('isFormValid');
         if (validResult) {
-            alert("提交业务逻辑");
+            $('#doc-vld-msg').ajaxSubmit(function (result) {
+                console.log(result);
+                if (result.code == 200) {
+                    alert("操作成功，我要刷新表格了！");
+                    closeModal();
+                }
+            },"json");
         }
     };
 </script>

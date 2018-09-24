@@ -14,3 +14,10 @@ loadPageByModal = function (url,width,height) {
         $('#page-modal').modal('open');
     });
 };
+
+closeModal = function (id) {
+    if (id == null || "" == id) {
+        id = "page-modal";
+    }
+    $("#" + id).modal('close');
+};

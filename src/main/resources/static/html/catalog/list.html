@@ -1,62 +1,55 @@
 <meta charset="UTF-8">
-<div class="tpl-portlet-components">
-    <div class="tpl-block">
-        <div class="am-g">
-            <div class="am-u-sm-12 am-u-md-6">
-                <div class="am-btn-toolbar">
-                    <div class="am-btn-group am-btn-group-xs">
-                        <button type="button" class="am-btn am-btn-default am-btn-success"
-                                onclick="loadPageByModal('./catalog/add.html')"><span
-                                class="am-icon-plus"></span> 新增
-                        </button>
-                        <button type="button" class="am-btn am-btn-default am-btn-secondary"
-                                onclick="loadPageByModal('./catalog/add.html',800,600)"><span
-                                class="am-icon-save"></span> 保存
-                        </button>
-                        <button type="button" class="am-btn am-btn-default am-btn-warning"><span
-                                class="am-icon-archive"></span> 审核
-                        </button>
-                        <button type="button" class="am-btn am-btn-default am-btn-danger"><span
-                                class="am-icon-trash-o"></span> 删除
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="am-g">
-            <div class="am-u-sm-12">
-                <form class="am-form">
-                    <table class="am-table am-table-striped am-table-hover table-main" id="myTable">
-
-                    </table>
-                    <hr>
-
-                </form>
-            </div>
-
-        </div>
+<div class="content-box-large">
+    <div class="panel-heading">
+        <div class="panel-title">分类管理列表</div>
     </div>
-    <div class="tpl-alert"></div>
+    <div class="panel-body">
+        <div id="toolbar">
+            <button class="btn btn-success" onclick="loadPageByModal('./catalog/add.html')">新增</button>
+            <button id="remove" class="btn btn-danger" disabled>
+                <i class="glyphicon glyphicon-remove"></i> Delete
+            </button>
+        </div>
+        <table id="table"></table>
+    </div>
 </div>
 <script>
-
-    $(function () {
-        $("#myTable").bootstrapTable({
-            method: "GET",
-            url: '/catalogs',
-            columns: [{
-                field: 'uuid',
-                title: '编号'
-            }, {
-                field: 'name',
-                title: '分类名称'
-            }, {
-                field: 'level',
-                title: '层级'
-            }]
-        });
-
+    $('#table').bootstrapTable({
+        height:$(window).height()-260,
+        url: '/catalogs',
+        striped: true,                      //是否显示行间隔色
+        cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+        pagination: true,                   //是否显示分页（*）
+        sortable: false,                     //是否启用排序
+        sortOrder: "asc",                   //排序方式
+        queryParams: function(params){
+            var temp = {   //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
+                pageSize: params.limit,   //页面大小
+                pageNo: params.offset  //页码
+            };
+            return temp;
+        },//传递参数（*）
+        sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
+        pageNumber:1,                       //初始化加载第一页，默认第一页
+        pageSize: 10,                       //每页的记录行数（*）
+        pageList: [10, 25, 50, 100],        //可供选择的每页的行数（*）
+        clickToSelect: true,                //是否启用点击选中行
+        uniqueId: "uuid",                     //每一行的唯一标识，一般为主键列
+        columns: [{
+            field: 'uuid',
+            title: '编号'
+        }, {
+            field: 'name',
+            title: '分类名称'
+        }, {
+            field: 'level',
+            title: '层级'
+        }]
     });
 
+    $(function () {
+
+
+    });
 
 </script>

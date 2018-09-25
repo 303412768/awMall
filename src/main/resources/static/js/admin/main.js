@@ -10,8 +10,8 @@ loadPageByModal = function (url, width, height) {
         if (null != height) {
             $('#page-modal').css("height", height);
         }
-        $('#page-modal').html(result);
-        $('#page-modal').modal('open');
+        $('#modal-content').html(result);
+        $('#page-modal').modal('show');
     });
 };
 
@@ -19,7 +19,8 @@ closeModal = function (id) {
     if (id == null || "" == id) {
         id = "page-modal";
     }
-    $("#" + id).modal('close');
+    $("#" + id).modal('hide');
+    $('#modal-content').html("");
 };
 
 

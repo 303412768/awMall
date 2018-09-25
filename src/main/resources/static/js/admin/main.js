@@ -5,10 +5,10 @@ loadPage = function (url) {
 loadPageByModal = function (url, width, height) {
     $.get(url, function (result) {
         if (null != width) {
-            $('#page-modal').css("width", width);
+            $('#modal-content').css("width", width);
         }
         if (null != height) {
-            $('#page-modal').css("height", height);
+            $('#modal-content').css("height", height);
         }
         $('#modal-content').html(result);
         $('#page-modal').modal('show');
@@ -46,4 +46,21 @@ queryPage = function (divId, url, query) {
         });
 
     }, "json");
+};
+
+
+$.fn.formValidate = function (options) {
+    return $(this).validate({
+        focusInvalid: true,
+        onkeyup: function (element) {
+            $(element).valid();
+        },
+        submitHandler: function (form) {
+            if (options.submit) {
+                options.submit(form);
+            }
+        },
+        rules: options.rules,
+        messages: options.messages
+    })
 };

@@ -1,5 +1,7 @@
 package com.wen.mall.security;
 
+import org.springframework.util.StringUtils;
+
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,9 +23,10 @@ public class SecurityFilter implements  Filter{
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
         //System.out.println(req.getRequestURL().toString());
-       /* String s=req.getParameter("chen");
+        /*String s=req.getParameter("chen");
         if (StringUtils.isEmpty(s)) {
             res.setStatus(403);
+            return;
         }*/
         filterChain.doFilter(request,response);
     }

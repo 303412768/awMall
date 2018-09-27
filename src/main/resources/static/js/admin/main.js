@@ -68,6 +68,16 @@ $.fn.setForm = function (jsonValue) {
 };
 
 
+$.ajaxSetup( {
+    //设置ajax请求结束后的执行动作
+    complete : function(XMLHttpRequest, textStatus) {
+        if(XMLHttpRequest.status==403){
+            window.location.href = './login.html';
+        }
+    }
+});
+
+
 
 
 

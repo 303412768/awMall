@@ -23,7 +23,7 @@ import java.util.List;
  * @since 2018-09-20
  */
 @RestController
-@RequestMapping("/catalogs")
+@RequestMapping("/api/1.0/catalogs")
 public class CatalogController {
 
     @Autowired

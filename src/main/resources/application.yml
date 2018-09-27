@@ -60,7 +60,7 @@ mybatis-plus:
       #驼峰下划线转换
       column-underline: true
       #数据库大写下划线转换
-      #capital-mode: true
+      capital-mode: true
       #逻辑删除配置
       logic-delete-value: 0
       logic-not-delete-value: 1

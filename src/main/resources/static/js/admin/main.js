@@ -40,7 +40,7 @@ queryPage = function (divId, url, query) {
             groups: 5
 
         });
-        $("#"+divId).on('jump.page.amui', function(context) {
+        $("#" + divId).on('jump.page.amui', function (context) {
             console.log('点击分页按钮时会触发jump.page.amui事件');
             console.log(context);
         });
@@ -48,19 +48,42 @@ queryPage = function (divId, url, query) {
     }, "json");
 };
 
-
-$.fn.formValidate = function (options) {
-    return $(this).validate({
-        focusInvalid: true,
-        onkeyup: function (element) {
-            $(element).valid();
-        },
-        submitHandler: function (form) {
-            if (options.submit) {
-                options.submit(form);
+submitAndRefreshTable = function (formId, tableId) {
+    var bootstrapValidators = $('#' + formId).data('bootstrapValidator').validate();
+    console.log(bootstrapValidators.isValid());
+    if (bootstrapValidators.isValid()) {
+        $('#' + formId).ajaxSubmit(function (result) {
+            if (result.code === 200) {
+                $('#' + tableId).bootstrapTable('refresh');
+                closeModal("page-modal");
+            } else {
+                alert(result.msg);
             }
-        },
-        rules: options.rules,
-        messages: options.messages
-    })
+        });
+    }
+
 };
+
+
+
+$.fn.setForm = function (jsonValue) {
+    var obj = this;
+    $.each(jsonValue, function (key, value) {
+        //input 类型自动回填
+        var input = obj.find("input[name=" + key + "]");
+        switch (input[0].type) {
+            case "text" :
+            case "number" :
+                input.val(value);
+                break;
+        }
+        //select 类型自动回填
+       obj.find("select[name=" + key + "]").val(value);
+
+    });
+};
+
+
+
+
+

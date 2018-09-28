@@ -1,0 +1,103 @@
+<meta charset="UTF-8">
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+    </button>
+    <h4 class="modal-title" id="gridSystemModalLabel">新增商品</h4>
+</div>
+
+<div class="modal-body">
+    <div class="row">
+        <div class="col-md-12">
+            <form class="form-horizontal"  id="addForm" action="/api/1.0/goods/save" method="post">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">商品名称</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="name" placeholder="商品名称">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">规格</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="specification" placeholder="规格">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">零售价格</label>
+                    <div class="col-sm-10">
+                        <input type="number" class="form-control" name="retailPrice" placeholder="零售价格">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">代理价格</label>
+                    <div class="col-sm-10">
+                        <input type="number" class="form-control" name="wholesalePrice" step="0.01"   placeholder="代理价格">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">商品状态</label>
+                    <div class="col-sm-10">
+                        <select name="status" class="form-control" id="_status">
+
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">快递费用说明</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="postInfo" placeholder="快递费用">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+    <button type="button" class="btn btn-primary" onclick="submitAndRefreshTable('addForm','table')">保存</button>
+</div>
+<script>
+    $(function () {
+        initSelectInfo("_status", "GoodsStatus");
+        $('#addForm').bootstrapValidator({
+            feedbackIcons: {
+                valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            fields: {
+                name: {
+                    message: 'The username is not valid',
+                    validators: {
+                        notEmpty: {
+                            message: '必填项'
+                        },
+                        stringLength: {
+                            min: 2,
+                            max: 255,
+                            message: '分类编号长度在 %s 到 %s 之间！'
+                        }
+
+                    }
+                },
+                retailPrice: {
+                    validators: {
+                        notEmpty: {
+                            message: '必填项'
+                        }
+                    }
+                },
+                wholesalePrice: {
+                    validators: {
+                        notEmpty: {
+                            message: '必填项'
+                        }
+                    }
+                }
+            }
+        });
+    });
+
+
+
+</script>

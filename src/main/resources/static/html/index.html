@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="../assets/css/bootstrap-table.min.css">
     <link rel="stylesheet"
           href="//cdnjs.cloudflare.com/ajax/libs/jquery.bootstrapvalidator/0.5.2/css/bootstrapValidator.min.css"/>
+    <link rel="stylesheet" href="../assets/css/fileupload.css">
 
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -70,7 +71,8 @@
                     <li class="current"><a href="index.html"><i class="glyphicon glyphicon-home"></i> Dashboard</a></li>
                     <li onclick="loadPage('./catalog/list.html')"><a href="javascript:void(0)">
                         <i class="glyphicon glyphicon-calendar"></i> 分类管理</a></li>
-                    <li><a href="javascript:void(0)"><i class="glyphicon glyphicon-stats"></i> 商品管理</a></li>
+                    <li onclick="loadPage('./goods/list.html')"><a href="javascript:void(0)"><i
+                            class="glyphicon glyphicon-stats"></i> 商品管理</a></li>
                     <li class="submenu">
                         <a href="#">
                             <i class="glyphicon glyphicon-list"></i> Pages
@@ -117,11 +119,17 @@
 <!-- Include all compiled plugins (below), or include individual files as needed -->
 <script src="../assets/bootstrap/js/bootstrap.min.js"></script>
 <script src="../assets/js/custom.js"></script>
+<script src="../assets/vendors/select/bootstrap-select.min.js"></script>
 <script src="../assets/js/bootstrap-table.min.js"></script>
 <script src="../assets/js/bootstrap-table-zh-CN.js"></script>
 <script type="text/javascript"
         src="//cdnjs.cloudflare.com/ajax/libs/jquery.bootstrapvalidator/0.5.2/js/bootstrapValidator.min.js"></script>
 <script src="../assets/js/jquery.form.min.js"></script>
+<!--file upload-->
+<script src="../assets/js/jquery.ui.widget.js"></script>
+<script src="../assets/js/jquery.iframe-transport.js"></script>
+<script src="../assets/js/jquery.fileupload.js"></script>
+<!--file upload end-->
 <script src="../js/admin/main.js"></script>
 </body>
 </html>

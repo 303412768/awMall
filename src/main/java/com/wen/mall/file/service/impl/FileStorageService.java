@@ -6,6 +6,7 @@ import com.wen.mall.exception.MyFileNotFoundException;
 import com.wen.mall.file.entity.File;
 import com.wen.mall.file.entity.FileStorageProperties;
 import com.wen.mall.file.service.IFileService;
+import net.coobird.thumbnailator.Thumbnails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -66,7 +67,13 @@ public class FileStorageService {
             // Copy file to the target location (Replacing existing file with the same name)
             Path targetLocation = this.fileStorageLocation.resolve(fileName);
             Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
-
+            //压缩图片
+            String filePath = dbFile.getPath() + "/" + dbFile.getUuid() + "." + dbFile.getSuffix();
+            Thumbnails.of(filePath)
+                    .scale(1f)
+                    .outputQuality(0.5f)
+                    .toFile(filePath);
+            //压缩图片结束
             return dbFile.getUuid();
         } catch (IOException ex) {
             throw new FileStorageException("Could not store file " + fileName + ". Please try again!", ex);

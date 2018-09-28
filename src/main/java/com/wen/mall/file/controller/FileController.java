@@ -36,7 +36,7 @@ import java.util.stream.Collectors;
  * @since 2018-09-17
  */
 @RestController
-@RequestMapping("/files")
+@RequestMapping("/api/1.0/files")
 public class FileController {
     private static final Logger logger = LoggerFactory.getLogger(FileController.class);
 
@@ -54,14 +54,6 @@ public class FileController {
     @PostMapping("/uploadFile")
     public Result uploadFile(@RequestParam("file") MultipartFile file) {
         String uuid = fileStorageService.storeFile(file);
-
-      /*  String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path(fileStorageProperties.getUploadDir())
-                .path(fileName)
-                .toUriString();*/
-
-        /*return new UploadFileResponse(fileName, fileDownloadUri,
-                file.getContentType(), file.getSize());*/
         return Result.success(uuid);
     }
 

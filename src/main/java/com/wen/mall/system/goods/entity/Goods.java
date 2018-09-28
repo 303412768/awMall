@@ -3,6 +3,7 @@ package com.wen.mall.system.goods.entity;
 import java.math.BigDecimal;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
+import java.time.LocalDateTime;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
 import io.swagger.annotations.ApiModel;
@@ -43,7 +44,7 @@ public class Goods implements Serializable {
     @ApiModelProperty(value = "规格")
     private String specification;
 
-    @ApiModelProperty(value = "商品状态，折扣，上架，下架，缺货")
+    @ApiModelProperty(value = "商品状态GoodsStatus，1上架，2折扣，3缺货，4下架，")
     private String status;
 
     @ApiModelProperty(value = "零售价格")
@@ -51,6 +52,8 @@ public class Goods implements Serializable {
 
     @ApiModelProperty(value = "代理价格")
     private BigDecimal wholesalePrice;
+
+    private LocalDateTime updateTime;
 
 
 }

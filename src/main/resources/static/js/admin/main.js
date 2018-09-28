@@ -98,6 +98,16 @@ $.fn.setForm = function (jsonValue) {
     });
 };
 
+initSelectInfo = function (selectId, category,selectedValue) {
+    var url = "/api/1.0/baseCode/" + category;
+    $.get(url, function (result) {
+        $.each(result, function (index, obj) {
+            $("#"+selectId).append("<option value='"+obj.code+"'>"+obj.name+"</option>");
+        });
+        $("#" + selectId).val(selectedValue);
+    },"json");
+};
+
 
 $.ajaxSetup( {
     //设置ajax请求结束后的执行动作
@@ -107,6 +117,9 @@ $.ajaxSetup( {
         }
     }
 });
+
+
+
 
 
 

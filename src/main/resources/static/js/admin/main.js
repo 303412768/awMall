@@ -1,3 +1,4 @@
+var objId;
 loadPage = function (url) {
     $("#main_content").load(url)
 };
@@ -13,6 +14,11 @@ loadPageByModal = function (url, width, height) {
         $('#modal-content').html(result);
         $('#page-modal').modal('show');
     });
+};
+
+updateLoadPageByModal = function (url,uuid, width, height) {
+    loadPageByModal(url, width, height);
+    objId = uuid;
 };
 
 closeModal = function (id) {

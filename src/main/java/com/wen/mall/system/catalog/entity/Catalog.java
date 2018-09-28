@@ -30,6 +30,8 @@ public class Catalog implements Serializable {
     @TableId(value = "uuid", type = IdType.UUID)
     private String uuid;
 
+    private String code;
+
     private String name;
 
     private Integer level;

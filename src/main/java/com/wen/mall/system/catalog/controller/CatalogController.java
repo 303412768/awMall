@@ -7,6 +7,7 @@ import com.wen.mall.config.bean.PageResult;
 import com.wen.mall.config.bean.Result;
 import com.wen.mall.system.catalog.entity.Catalog;
 import com.wen.mall.system.catalog.service.ICatalogService;
+import com.wen.mall.tools.GeneratorKey;
 import com.wen.mall.tools.QueryWrapperTool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -39,7 +40,6 @@ public class CatalogController {
 
     @GetMapping("/list")
     public Result list(HttpServletRequest request) {
-
         QueryWrapper<Catalog> queryWrapper = new QueryWrapper<>();
         queryWrapper.orderByDesc("uuid");
         List<Catalog> list=  catalogService.list(queryWrapper);
@@ -53,6 +53,7 @@ public class CatalogController {
 
     @PostMapping("/save")
     public Result save(Catalog catalog) {
+        catalog.setUuid(GeneratorKey.getKey());
         catalogService.save(catalog);
         return Result.success();
     }

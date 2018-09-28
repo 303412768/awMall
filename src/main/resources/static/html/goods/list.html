@@ -74,11 +74,11 @@
                 field: 'uuid',
                 title: '操作',
                 formatter: function formatter(value, row, index) {
-                    var update = "<button class=\"btn btn-info\" onclick=\"updateLoadPageByModal('./catalog/update.html','" + value + "')\">修改</button>";
-                    var del = "<button  class=\"btn btn-danger\" onclick=\"deleteRows('table','/api/1.0/catalogs/delete','" + value + "')\">删除</button>";
+                    var update = "<button class=\"btn btn-info\" onclick=\"updateLoadPageByModal('./goods/update.html','" + value + "')\">修改</button>";
+                    var del = "<button  class=\"btn btn-danger\" onclick=\"deleteRows('table','/api/1.0/goods/delete','" + value + "')\">删除</button>";
                     //var file = "<input class='fileinput-button' id=\"" + value + "\" type=\"file\" name=\"files\" data-url=\"/api/1.0/files/uploadFile\" onclick=\"openAndUp('" + value + "')\" />";
                     var file = "<span class=\"btn btn-success fileinput-button\">\n" +
-                        "        <span>Add files...</span>\n" +
+                        "        <span>上传文件</span>\n" +
                         "        <input id=\""+value+"\" type=\"file\" name=\"file\"  data-url='/api/1.0/files/uploadFile' onclick=\"openAndUp('" + value + "')\">\n" +
                         "    </span>";
                     return update + del + file;

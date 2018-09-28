@@ -2,6 +2,7 @@ package com.wen.mall.tools;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 
+import com.google.common.base.CaseFormat;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -26,7 +27,7 @@ public class QueryWrapperTool<T> {
             String[] arr = attributeName.split("-");
             if (arr.length == 3) {
                 String queryType = arr[1];
-                String columnName = arr[2];
+                String columnName = CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, arr[2]);
                 Object value = request.getParameter(attributeName);
                 switch (queryType) {
                     case "eq":
@@ -58,7 +59,7 @@ public class QueryWrapperTool<T> {
     }
 
     private void setSort(HttpServletRequest request, QueryWrapper<T> queryWrapper) {
-        String sortName = request.getParameter("sortName");
+        String sortName = CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, request.getParameter("sortName"));
         String sortType = request.getParameter("sortOrder");
         if (!StringUtils.isEmpty(sortName)) {
             if ("desc".equals(sortType)) {
@@ -67,6 +68,18 @@ public class QueryWrapperTool<T> {
                 queryWrapper.orderByAsc(sortName);
             }
         }
+
+    }
+
+    public static void main(String[] args) {
+        System.out.println(CaseFormat.LOWER_HYPHEN.to(CaseFormat.LOWER_CAMEL, "test-data"));//testData
+        System.out.println(CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.LOWER_CAMEL, "test_data"));//testData
+        System.out.println(CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, "test_data"));//TestData
+
+        System.out.println(CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, "testdata"));//testdata
+        System.out.println(CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, "testData"));//test_data
+        System.out.println(CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_HYPHEN, "testData"));//test-data
+
 
     }
 }

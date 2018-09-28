@@ -86,14 +86,18 @@ $.fn.setForm = function (jsonValue) {
     $.each(jsonValue, function (key, value) {
         //input 类型自动回填
         var input = obj.find("input[name=" + key + "]");
-        switch (input[0].type) {
-            case "text" :
-            case "number" :
-                input.val(value);
-                break;
-        }
         //select 类型自动回填
-       obj.find("select[name=" + key + "]").val(value);
+        obj.find("select[name=" + key + "]").val(value);
+        if (input.length===1) {
+            switch (input[0].type) {
+                case "text" :
+                case "number" :
+                    input.val(value);
+                    break;
+            }
+
+
+        }
 
     });
 };

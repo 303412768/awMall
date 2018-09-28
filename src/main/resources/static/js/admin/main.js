@@ -51,6 +51,31 @@ submitAndRefreshTable = function (formId, tableId) {
 
 };
 
+deleteRows = function (tableId,url,uuid) {
+    var ids="";
+    if (uuid == null || "" == uuid) {
+        var rows=$("#"+tableId).bootstrapTable('getSelections');
+        if (rows == null || rows=="") {
+            alert("请选择数据！");
+            return;
+        }
+        $.each(rows, function (index, obj) {
+            ids+=obj.uuid+","
+        });
+    }else{
+        ids = uuid;
+    }
+    $.post(url +"/"+ ids, function (result) {
+        if (result.code === 200) {
+            $('#' + tableId).bootstrapTable('refresh');
+        } else {
+            alert(result.msg);
+        }
+    },"json");
+
+
+};
+
 
 /**
  * 表单自动回填

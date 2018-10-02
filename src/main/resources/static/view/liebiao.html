@@ -4,7 +4,22 @@
     <meta charset="UTF-8">
     <title>全球购-澳洲站</title>
     <link rel="stylesheet" type="text/css" href="../css/style.css">
-
+    <style>
+        .js-load-more {
+            padding: 0 15px;
+            width: 120px;
+            height: 30px;
+            background-color: #D31733;
+            color: #fff;
+            line-height: 30px;
+            text-align: center;
+            border-radius: 5px;
+            margin: 20px auto;
+            border: 0 none;
+            font-size: 16px;
+            display: none; /*默认不显示，ajax调用成功后才决定显示与否*/
+        }
+    </style>
 </head>
 <body>
 
@@ -36,9 +51,21 @@
 
 </div>
 
-<footer class="mt20 center" >
-    <div onclick="loadMore()" id="loadMoreDiv"><h2>加在更多。。。</h2></div>
-</footer>
+
+<div style="
+    margin-top: 20px;
+    margin: 0 auto;
+    padding:0 15px;
+            width:120px;
+            height:30px;
+            background-color:#D31733;
+            color:#fff;
+            line-height:30px;
+            text-align:center;
+            border-radius:5px;
+            border:0 none;
+            font-size:16px;" onclick="loadMore()" id="loadMoreDiv"><h2>加在对对对更多。。。</h2></div>
+
 <script src="../assets/js/jquery.min.js"></script>
 <script>
     initCatalogs();
@@ -48,7 +75,7 @@
         var url = "/api/1.0/catalogs/list?sortName=code&sortOrder=asc";
         $.get(url, function (result) {
             $.each(result.data, function (index, obj) {
-                $("#" + selectId).append(" <li><a href='#' onclick=\"setCatalogId('" + obj.code + "','"+obj.name+"')\">" + obj.name + "</a></li>");
+                $("#" + selectId).append(" <li><a href='#' onclick=\"setCatalogId('" + obj.code + "','" + obj.name + "')\">" + obj.name + "</a></li>");
             });
         }, "json");
     }
@@ -64,7 +91,7 @@
      * @param id
      * @param name
      */
-    function setCatalogId(id,name) {
+    function setCatalogId(id, name) {
         $("#catalogTitle").text(name);
         catalogId = id;
         totalPages = 1;
@@ -95,7 +122,7 @@
         if (no == null || no === 1) {
             $("#goodsContent").empty();
             pageNo = 1;
-        }else{
+        } else {
             pageNo = no;
         }
         var query = {
@@ -113,10 +140,10 @@
             var end = "<div class=\"clear\"></div></div>";
             totalPages = parseInt((result.total / pageSize) + (result.total % pageSize === 0 ? 0 : 1));
             console.log("总页码：" + totalPages);
-            if (currentPageNo === totalPages || totalPages===1) {
+            if (currentPageNo === totalPages || totalPages === 1) {
                 console.log("hide load div");
                 $("#loadMoreDiv").hide();
-            }else{
+            } else {
                 $("#loadMoreDiv").show();
             }
             var html = "";

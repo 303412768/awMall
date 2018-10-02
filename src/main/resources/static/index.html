@@ -1,10 +1,146 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>全球购-澳洲站</title>
+    <link rel="stylesheet" type="text/css" href="./css/style.css">
+
 </head>
 <body>
-<h1>Hello Java!</h1>
+
+<!-- start banner_x -->
+<div class="banner_x center">
+
+    <div class="nav fl">
+        <ul id="catalogIdUL">
+            <li><a href='#' onclick="setCatalogId(null,'首页')">首页</a></li>
+        </ul>
+    </div>
+    <div class="search fr">
+        <form action="" method="post">
+            <div class="text fl">
+                <input type="text" class="shuru" placeholder="商品名称" id="searchText">
+            </div>
+            <div class="submit fl">
+                <input type="button" class="sousuo" value="搜索" onclick="loadGoods()"/>
+            </div>
+            <div class="clear"></div>
+        </form>
+        <div class="clear"></div>
+    </div>
+</div>
+<!-- end banner_x -->
+
+<div class="biaoti center" id="catalogTitle">首页</div>
+<div class="danpin center" id="goodsContent">
+
+</div>
+
+<footer class="mt20 center" >
+    <div onclick="loadMore()" id="loadMoreDiv"><h2>加在更多。。。</h2></div>
+</footer>
+<script src="./assets/js/jquery.min.js"></script>
+<script>
+    initCatalogs();
+
+    function initCatalogs() {
+        var selectId = "catalogIdUL";
+        var url = "/api/1.0/catalogs/list?sortName=code&sortOrder=asc";
+        $.get(url, function (result) {
+            $.each(result.data, function (index, obj) {
+                $("#" + selectId).append(" <li><a href='#' onclick=\"setCatalogId('" + obj.code + "','"+obj.name+"')\">" + obj.name + "</a></li>");
+            });
+        }, "json");
+    }
+
+    var pageSize = 5;
+    var pageNo = 1;
+    var currentPageNo = 1;
+    var totalPages = 1;
+    var catalogId = null;
+
+    /**
+     *  当设置分类说明从第一页开始查询
+     * @param id
+     * @param name
+     */
+    function setCatalogId(id,name) {
+        $("#catalogTitle").text(name);
+        catalogId = id;
+        totalPages = 1;
+        currentPageNo = 1;
+        loadGoods();
+    }
+
+    function loadMore() {
+        console.log((currentPageNo + 1) <= totalPages);
+        console.log("currentPageNo:" + currentPageNo);
+        console.log("totalPages:" + totalPages);
+        if ((currentPageNo + 1) <= totalPages) {
+            currentPageNo++;
+            loadGoods(currentPageNo);
+
+        }
+        if (currentPageNo === totalPages) {
+            console.log("hide load div");
+            $("#loadMoreDiv").hide();
+        }
+
+
+    }
+
+    loadGoods();
+
+    function loadGoods(no) {
+        if (no == null || no === 1) {
+            $("#goodsContent").empty();
+            pageNo = 1;
+        }else{
+            pageNo = no;
+        }
+        var query = {
+            "pageNo": pageNo,
+            "pageSize": pageSize,
+            "query-like-name": $("#searchText").val(),
+            "query-eq-catalogId": catalogId,
+            "sortName": "name",
+            "sortOrder": "desc"
+        };
+
+        var url = "/api/1.0/goods";
+        $.get(url, query, function (result) {
+            var head = "<div class=\"main center mb20\">";
+            var end = "<div class=\"clear\"></div></div>";
+            totalPages = parseInt((result.total / pageSize) + (result.total % pageSize === 0 ? 0 : 1));
+            console.log("总页码：" + totalPages);
+            if (currentPageNo === totalPages || totalPages===1) {
+                console.log("hide load div");
+                $("#loadMoreDiv").hide();
+            }else{
+                $("#loadMoreDiv").show();
+            }
+            var html = "";
+            for (var i = 0; i < result.rows.length; i++) {
+                var obj = result.rows[i];
+                var postInof = obj.postInfo == null ? '-' : obj.postInfo;
+                var content = "  <div class=\"mingxing fl mb20\" style=\"border:2px solid #fff;width:230px;cursor:pointer;\"\n" +
+                    "             onmouseout=\"this.style.border='2px solid #fff'\" onmousemove=\"this.style.border='2px solid red'\">\n" +
+                    "            <div class=\"sub_mingxing\"><a href=\"#\"><img src=\"/api/1.0/files/downloadFile/" + obj.mainPicId + "\" alt=\"\"></a></div>\n" +
+                    "            <div class=\"pinpai\"><a href=\"#\">" + obj.name + "</a></div>\n" +
+                    "            <div class=\"youhui\">" + postInof + "</div>\n" +
+                    "            <div class=\"jiage\">" + obj.retailPrice + "元</div>\n" +
+                    "        </div>";
+                html += content;
+                if ((i + 1) % 5 === 0 || (i + 1) === result.rows.length) {
+                    $("#goodsContent").append(head + html + end);
+                    html = "";
+                }
+            }
+
+
+        }, "json");
+    }
+</script>
+
 </body>
 </html>

@@ -51,7 +51,6 @@ mybatis-plus:
   #实体扫描，多%u4E2 Apackage用逗号或者分号分隔
   typeAliasesPackage: com.wen.mall.**.entity
   global-config:
-
     # 数据库相关配置
     db-config:
       #主键类型  AUTO:"数据库ID自增", INPUT:"用户输入ID",ID_WORKER:"全局唯一ID (数字类型唯一ID)", UUID:"全局唯一ID UUID";
@@ -67,12 +66,11 @@ mybatis-plus:
       logic-not-delete-value: 1
       db-type: mysql
     #刷新mapper 调试神器
-    refresh: true
+    refresh: false
   # 原生配置
   configuration:
     map-underscore-to-camel-case: true
     cache-enabled: false
-    call-setters-on-nulls: true
 
 logging.config: classpath:log4j2-spring.xml
 

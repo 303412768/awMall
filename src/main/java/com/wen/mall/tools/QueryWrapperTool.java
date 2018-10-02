@@ -29,6 +29,9 @@ public class QueryWrapperTool<T> {
                 String queryType = arr[1];
                 String columnName = CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, arr[2]);
                 Object value = request.getParameter(attributeName);
+                if (StringUtils.isEmpty(value)) {
+                    return;
+                }
                 switch (queryType) {
                     case "eq":
                         queryWrapper.eq(columnName, value);

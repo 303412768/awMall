@@ -11,7 +11,7 @@
  Target Server Version : 80012
  File Encoding         : 65001
 
- Date: 28/09/2018 17:40:33
+ Date: 02/10/2018 17:47:38
 */
 
 SET NAMES utf8mb4;
@@ -63,10 +63,11 @@ CREATE TABLE `t_goods`  (
   `main_pic_id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '主图ID',
   `post_info` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '快递说明',
   `specification` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '规格',
-  `status` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '商品状态GoodsStatus，1上架，2折扣，3缺货，4下架，',
+  `status` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '商品状态GoodsStatus，0下架，1上架，2折扣，3缺货，',
   `retail_price` decimal(10, 2) NULL DEFAULT NULL COMMENT '零售价格',
   `wholesale_price` decimal(10, 2) NULL DEFAULT NULL COMMENT '代理价格',
   `update_time` datetime(0) NULL DEFAULT NULL,
+  `catalog_id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '商品分类ID',
   PRIMARY KEY (`uuid`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 

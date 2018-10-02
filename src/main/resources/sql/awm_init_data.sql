@@ -11,7 +11,7 @@
  Target Server Version : 80012
  File Encoding         : 65001
 
- Date: 28/09/2018 17:41:07
+ Date: 02/10/2018 17:47:51
 */
 
 SET NAMES utf8mb4;
@@ -35,7 +35,7 @@ CREATE TABLE `t_base_code`  (
 INSERT INTO `t_base_code` VALUES ('1', '1', '上架', 'GoodsStatus');
 INSERT INTO `t_base_code` VALUES ('2', '2', '折扣', 'GoodsStatus');
 INSERT INTO `t_base_code` VALUES ('3', '3', '缺货', 'GoodsStatus');
-INSERT INTO `t_base_code` VALUES ('4', '4', '下架', 'GoodsStatus');
+INSERT INTO `t_base_code` VALUES ('4', '0', '下架', 'GoodsStatus');
 
 -- ----------------------------
 -- Table structure for t_catalog
@@ -105,22 +105,23 @@ CREATE TABLE `t_goods`  (
   `main_pic_id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '主图ID',
   `post_info` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '快递说明',
   `specification` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '规格',
-  `status` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '商品状态GoodsStatus，1上架，2折扣，3缺货，4下架，',
+  `status` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '商品状态GoodsStatus，0下架，1上架，2折扣，3缺货，',
   `retail_price` decimal(10, 2) NULL DEFAULT NULL COMMENT '零售价格',
   `wholesale_price` decimal(10, 2) NULL DEFAULT NULL COMMENT '代理价格',
   `update_time` datetime(0) NULL DEFAULT NULL,
+  `catalog_id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '商品分类ID',
   PRIMARY KEY (`uuid`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of t_goods
 -- ----------------------------
-INSERT INTO `t_goods` VALUES ('60e7829f96c4414a9a7813a9871710a6', '12', 'ec00d234-239c-4c30-bacf-1bf92192fcdb', '444', '23', '2', 3.00, 33.00, '2018-09-28 17:08:00');
-INSERT INTO `t_goods` VALUES ('6bccba53721a49b9b5b9e0bbbadee251', '爱他美1段', '3a55a5a4-ebe2-4d26-b893-957a4c5197d1', '22', '三生三世', '1', 12.00, 12.08, NULL);
-INSERT INTO `t_goods` VALUES ('90a9410f440941c2aea57cbc701aed3c', '123', '2da58fb2-d76f-42a2-8ae7-894dc069b9eb', '123', '123', '3', 123.00, 321.00, '2018-09-28 17:07:35');
-INSERT INTO `t_goods` VALUES ('c63500902d2042229892e98db39a2c77', '123', '73dcbb6d-7fac-4e19-8ecb-df41ac662678', '123', '123', '2', 123.00, 123.00, '2018-09-28 17:07:53');
-INSERT INTO `t_goods` VALUES ('d792cd70f4ed4c499026e8691be8113b', '123', '0b2f610a-574d-4d61-90e9-232a4ab4c76d', '123', '123', '3', 123.00, 123.00, '2018-09-28 17:07:46');
-INSERT INTO `t_goods` VALUES ('e29eea64ca6449a3aec6e3aa10e15036', '对对对', 'be532bc9-fb24-4204-bba4-f6d35ea9cdd1', NULL, '232', '2', 1222.00, 12.02, NULL);
+INSERT INTO `t_goods` VALUES ('60e7829f96c4414a9a7813a9871710a6', '测试2', 'ec00d234-239c-4c30-bacf-1bf92192fcdb', '444', '23', '2', 3.00, 33.00, '2018-10-02 13:28:00', '10');
+INSERT INTO `t_goods` VALUES ('6bccba53721a49b9b5b9e0bbbadee251', '爱他美1段', '3a55a5a4-ebe2-4d26-b893-957a4c5197d1', '22', '三生三世', '1', 12.00, 12.08, NULL, '10');
+INSERT INTO `t_goods` VALUES ('90a9410f440941c2aea57cbc701aed3c', '123', '2da58fb2-d76f-42a2-8ae7-894dc069b9eb', '123', '123', '3', 123.00, 321.00, '2018-09-28 17:07:35', '10');
+INSERT INTO `t_goods` VALUES ('c63500902d2042229892e98db39a2c77', '123', '73dcbb6d-7fac-4e19-8ecb-df41ac662678', '123', '123', '2', 123.00, 123.00, '2018-09-28 17:07:53', '10');
+INSERT INTO `t_goods` VALUES ('d792cd70f4ed4c499026e8691be8113b', '123', '0b2f610a-574d-4d61-90e9-232a4ab4c76d', '123', '123', '3', 123.00, 123.00, '2018-09-28 17:07:46', '20');
+INSERT INTO `t_goods` VALUES ('e29eea64ca6449a3aec6e3aa10e15036', '对对对', 'be532bc9-fb24-4204-bba4-f6d35ea9cdd1', NULL, '232', '2', 1222.00, 12.02, NULL, '20');
 
 -- ----------------------------
 -- Table structure for t_user

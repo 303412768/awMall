@@ -25,7 +25,7 @@ public class BaseCodeInit implements ApplicationRunner {
     }
 
     public void initBaseCode() {
-        BaseCodeProperity.CODE_MAP.clear();
+        BaseCodeProperty.CODE_MAP.clear();
         QueryWrapper<BaseCode> queryWrapper = new QueryWrapper<>();
         queryWrapper.select(CATEGORY);
         queryWrapper.groupBy(CATEGORY);
@@ -34,7 +34,7 @@ public class BaseCodeInit implements ApplicationRunner {
             QueryWrapper<BaseCode> wrapper = new QueryWrapper<>();
             wrapper.eq(CATEGORY, obj.getCategory());
             List<BaseCode> listByCategory=baseCodeService.list(wrapper);
-            BaseCodeProperity.CODE_MAP.put(obj.getCategory(), listByCategory);
+            BaseCodeProperty.CODE_MAP.put(obj.getCategory(), listByCategory);
         });
     }
 }

@@ -12,11 +12,13 @@
         <result column="status" property="status" />
         <result column="retail_price" property="retailPrice" />
         <result column="wholesale_price" property="wholesalePrice" />
+        <result column="update_time" property="updateTime" />
+        <result column="catalog_id" property="catalogId" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        uuid, name, main_pic_id, post_info, specification, status, retail_price, wholesale_price
+        uuid, name, main_pic_id, post_info, specification, status, retail_price, wholesale_price, update_time
     </sql>
 
 </mapper>

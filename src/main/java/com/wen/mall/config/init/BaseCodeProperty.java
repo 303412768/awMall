@@ -5,9 +5,8 @@ import com.wen.mall.config.code.entity.BaseCode;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicReference;
 
-public class BaseCodeProperity {
+public class BaseCodeProperty {
 
     public static Map<String, List<BaseCode>> CODE_MAP = new HashMap<>();
 

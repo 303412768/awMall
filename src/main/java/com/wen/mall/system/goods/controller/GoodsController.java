@@ -62,8 +62,8 @@ public class GoodsController {
 
     @PostMapping("/update")
     public Result update(Goods goods) {
-        goodsService.updateById(goods);
         goods.setUpdateTime(LocalDateTime.now());
+        goodsService.updateById(goods);
         return Result.success();
     }
 

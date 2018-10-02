@@ -1,20 +1,25 @@
 package com.wen.mall.system.goods.entity;
 
-import java.math.BigDecimal;
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
-import java.time.LocalDateTime;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
-import java.io.Serializable;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.wen.mall.config.init.BaseCodeCategory;
+import com.wen.mall.config.init.BaseCodeProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
+import java.beans.Transient;
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author John
@@ -24,7 +29,7 @@ import lombok.experimental.Accessors;
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 @TableName("t_goods")
-@ApiModel(value="Goods对象", description="")
+@ApiModel(value = "Goods对象", description = "")
 public class Goods implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -54,6 +59,15 @@ public class Goods implements Serializable {
     private BigDecimal wholesalePrice;
 
     private LocalDateTime updateTime;
+
+    private String catalogId;
+
+    @TableField(exist = false)
+    private String statusName;
+
+    public String getStatusName() {
+        return BaseCodeProperty.getName(BaseCodeCategory.GOODS_STATUS, this.status);
+    }
 
 
 }

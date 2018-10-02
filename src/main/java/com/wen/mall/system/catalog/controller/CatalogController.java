@@ -40,8 +40,7 @@ public class CatalogController {
 
     @GetMapping("/list")
     public Result list(HttpServletRequest request) {
-        QueryWrapper<Catalog> queryWrapper = new QueryWrapper<>();
-        queryWrapper.orderByDesc("uuid");
+        QueryWrapper<Catalog> queryWrapper= new QueryWrapperTool<Catalog>().getQueryWrapper(request);
         List<Catalog> list=  catalogService.list(queryWrapper);
         return Result.success(list);
     }

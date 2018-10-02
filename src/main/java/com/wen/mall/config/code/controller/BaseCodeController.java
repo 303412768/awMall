@@ -4,7 +4,7 @@ package com.wen.mall.config.code.controller;
 import com.wen.mall.config.bean.Result;
 import com.wen.mall.config.code.entity.BaseCode;
 import com.wen.mall.config.init.BaseCodeInit;
-import com.wen.mall.config.init.BaseCodeProperity;
+import com.wen.mall.config.init.BaseCodeProperty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,12 +30,12 @@ public class BaseCodeController {
 
     @GetMapping("/{category}")
     public List<BaseCode> getListByCategory(@PathVariable String category) {
-        return BaseCodeProperity.getListByCategory(category);
+        return BaseCodeProperty.getListByCategory(category);
     }
 
     @GetMapping("/{category}/{code}")
     public String getName(@PathVariable String category,@PathVariable String code) {
-        return BaseCodeProperity.getName(category,code);
+        return BaseCodeProperty.getName(category,code);
     }
 
     @GetMapping("/fresh")

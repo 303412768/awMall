@@ -108,7 +108,9 @@ initSelectInfo = function (selectId, category,selectedValue) {
         $.each(result, function (index, obj) {
             $("#"+selectId).append("<option value='"+obj.code+"'>"+obj.name+"</option>");
         });
-        $("#" + selectId).val(selectedValue);
+        if (null != selectedValue) {
+            $("#" + selectId).val(selectedValue);
+        }
     },"json");
 };
 

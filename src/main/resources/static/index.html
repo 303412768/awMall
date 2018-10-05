@@ -88,9 +88,6 @@
     }
 
     function loadMore() {
-        console.log((currentPageNo + 1) <= totalPages);
-        console.log("currentPageNo:" + currentPageNo);
-        console.log("totalPages:" + totalPages);
         if ((currentPageNo + 1) <= totalPages) {
             currentPageNo++;
             loadGoods(currentPageNo);
@@ -118,6 +115,7 @@
             "pageSize": pageSize,
             "query-like-name": $("#searchText").val(),
             "query-eq-catalogId": catalogId,
+            "query-gt-status" : 0,
             "sortName": "name",
             "sortOrder": "desc"
         };

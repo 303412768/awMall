@@ -1,85 +1,170 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>全球购-澳洲站</title>
-    <link rel="stylesheet" type="text/css" href="./css/style.css">
+    <title>全球购-Vivien 澳洲站</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap-theme.min.css"
+          rel="stylesheet">
     <style>
-        .js-load-more {
-            padding: 0 15px;
-            width: 400px;
-            height: 30px;
-            background-color: #D31733;
-            color: #fff;
-            line-height: 30px;
+
+        div .thumbnail {
+            height: 350px;
+        }
+
+        .thumbnail .caption {
+            padding: 9px;
+            color: #333;
             text-align: center;
-            border-radius: 5px;
-            margin: 20px auto;
-            border: 0 none;
-            font-size: 16px;
-            display: none; /*默认不显示，ajax调用成功后才决定显示与否*/
+        }
+
+        .divBord {
+            border: solid 1px #d9534f;
+        }
+
+        .thumbnail img {
+            height: 230px;
+            max-width: 230px;
+            max-height: 230px;
         }
     </style>
 </head>
 <body>
+<nav class="navbar navbar-default navbar-static-top navbar-fixed-top  navbar-inverse" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">全球购-澳洲站</a>
+        </div>
+        <div class="collapse navbar-collapse" id="example-navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="#" onclick="setCatalogId(null,'首页')">首页</a></li>
+                <li class="active"><a href="www.google.com" target="_blank">Vivien 土澳生活</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        商品分类 <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu" id="catalogIdUL">
+                        <!-- <li><a href="#">奶粉</a></li>
+                         <li><a href="#">Health Care</a></li>
+                         <li><a href="#">Nation</a></li>-->
+                    </ul>
+                </li>
 
-<!-- start banner_x -->
-<div class="banner_x center">
+            </ul>
+            <form class="navbar-form navbar-left" role="search">
+                <div class="form-group">
+                    <input type="text" style="width: 300px" class="form-control" placeholder="商品名称" id="searchText">
+                </div>
+                <button type="button" class="btn btn-default search-query" onclick="loadGoods()">搜索</button>
+            </form>
+            <!--<ul class="nav navbar-nav navbar-right">
+                <li><a href="#"><span class="glyphicon glyphicon-user"></span> 注册</a></li>
 
-    <div class="nav fl">
-        <ul id="catalogIdUL">
-            <li><a href='#' onclick="setCatalogId(null,'首页')">首页</a></li>
-        </ul>
+            </ul>-->
+        </div>
+
     </div>
-    <div class="search fr">
-        <form action="" method="post">
-            <div class="text fl">
-                <input type="text" class="shuru" placeholder="商品名称" id="searchText">
+</nav>
+
+<div class="container">
+    <div class="row" style="margin-top: 60px">
+        <div class="col-xs-6 col-md-8">
+            <h2 id="catalogTitle">首页</h2>
+            <h2>
+                <small>当前只开放商品查询以及询价，后续功能正在开发中。如果您挑选好心仪的商品或者需要的商品未能查询到可以直接与Vivien联系。</small>
+            </h2>
+        </div>
+        <div class="col-xs-6 col-md-4">
+            <div class="media">
+                <a class="pull-left" href="#">
+                    <img style="height: 80px;width: 80px"
+                         src="/image/qrcode.jpg">
+                </a>
+                <div class="media-body">
+                    <h4 class="media-heading">欢迎扫码添加 Vivien 微信</h4>
+                    <div class="media">
+                       如果想要咨询或者下单购买请添加Vivien微信
+                    </div>
+                </div>
             </div>
-            <div class="submit fl">
-                <input type="button" class="sousuo" value="搜索" onclick="loadGoods()"/>
+        </div>
+    </div>
+    <div class="divider"></div>
+    <div class="row" id="goodsContent">
+        <!--<div class="col-xs-6 col-md-3">
+            <div class="thumbnail" data-toggle="tooltip" data-placement="top"
+                 title="缓解视力疲劳，特别都好用是立刻说佳都科技法律上解放了是否单身是可见分量速度加快发牢骚的">
+                <img src="http://39.104.226.210/api/1.0/files/downloadFile/6e1b7f9a-3144-4f69-8105-9909d4898731">
+                <div class="caption">
+                    <h4>Refresh 眼药水（120ml）</h4>
+                    <p>运费：4个25元，6个30元</p>
+                    <p>
+                    <div class="text-danger"><h4>9999元</h4></div>
+                    </p>
+                </div>
             </div>
-            <div class="clear"></div>
-        </form>
-        <div class="clear"></div>
+        </div>-->
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12 col-md-12">
+            <div type="button" id="loadMoreDiv" class="btn btn-danger btn-block" onclick="loadMore()">加载更多澳洲商品</div>
+        </div>
     </div>
 </div>
-<!-- end banner_x -->
 
-<div class="biaoti center" id="catalogTitle">首页</div>
-<div class="danpin center" id="goodsContent">
 
-</div>
-
-<footer class="mt20 center" >
-    <div class="js-load-more" onclick="loadMore()" id="loadMoreDiv"><h2>加载更多。。。</h2></div>
-</footer>
-<script src="./assets/js/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script>
-    initCatalogs();
+    $(function () {
+        $("[data-toggle='tooltip']").tooltip();
+        $("div .thumbnail").hover(
+            function () {
+                $(this).addClass("divBord");
+            }, function () {
+                $(this).removeClass("divBord");
+            }
+        );
+        initCatalogs();
+        loadGoods();
+    });
+
+    function tipShow() {
+        $("[data-toggle='tooltip']").tooltip();
+        $("div .thumbnail").hover(
+            function () {
+                $(this).addClass("divBord");
+            }, function () {
+                $(this).removeClass("divBord");
+            }
+        );
+    }
+
+
+    var pageSize = 20;
+    var pageNo = 1;
+    var currentPageNo = 1;
+    var totalPages = 1;
+    var catalogId = null;
 
     function initCatalogs() {
         var selectId = "catalogIdUL";
         var url = "/api/1.0/catalogs/list?sortName=code&sortOrder=asc";
         $.get(url, function (result) {
             $.each(result.data, function (index, obj) {
-                $("#" + selectId).append(" <li><a href='#' onclick=\"setCatalogId('" + obj.code + "','"+obj.name+"')\">" + obj.name + "</a></li>");
+                $("#" + selectId).append(" <li><a href='#' onclick=\"setCatalogId('" + obj.code + "','" + obj.name + "')\">" + obj.name + "</a></li>");
             });
         }, "json");
     }
 
-    var pageSize = 5;
-    var pageNo = 1;
-    var currentPageNo = 1;
-    var totalPages = 1;
-    var catalogId = null;
 
     /**
      *  当设置分类说明从第一页开始查询
      * @param id
      * @param name
      */
-    function setCatalogId(id,name) {
+    function setCatalogId(id, name) {
         $("#catalogTitle").text(name);
         catalogId = id;
         totalPages = 1;
@@ -97,62 +182,62 @@
             console.log("hide load div");
             $("#loadMoreDiv").hide();
         }
-
-
     }
 
-    loadGoods();
-
     function loadGoods(no) {
-        if (no == null || no === 1) {
+        console.log("当前加载页码：" + no);
+        if (no == null || no === 1 || no == undefined) {
             $("#goodsContent").empty();
             pageNo = 1;
-        }else{
+            console.log("清理DIV");
+        } else {
             pageNo = no;
         }
+        console.log("pageNo:" + pageNo);
         var query = {
             "pageNo": pageNo,
             "pageSize": pageSize,
             "query-like-name": $("#searchText").val(),
             "query-eq-catalogId": catalogId,
-            "query-gt-status" : 0,
+            "query-gt-status": 0,
             "sortName": "name",
             "sortOrder": "desc"
         };
 
         var url = "/api/1.0/goods";
         $.get(url, query, function (result) {
-            var head = "<div class=\"main center mb20\">";
-            var end = "<div class=\"clear\"></div></div>";
             totalPages = parseInt((result.total / pageSize) + (result.total % pageSize === 0 ? 0 : 1));
             console.log("总页码：" + totalPages);
-            if (currentPageNo === totalPages || totalPages===1) {
+            if (currentPageNo === totalPages || totalPages === 1 || totalPages === 0) {
                 console.log("hide load div");
                 $("#loadMoreDiv").hide();
-            }else{
+            } else {
                 $("#loadMoreDiv").show();
             }
-            var html = "";
             for (var i = 0; i < result.rows.length; i++) {
                 var obj = result.rows[i];
-                var postInof = obj.postInfo == null ? '-' : obj.postInfo;
-                var content = "  <div class=\"mingxing fl mb20\" style=\"border:2px solid #fff;width:230px;cursor:pointer;\"\n" +
-                    "             onmouseout=\"this.style.border='2px solid #fff'\" onmousemove=\"this.style.border='2px solid red'\">\n" +
-                    "            <div class=\"sub_mingxing\"><a href=\"#\"><img src=\"/api/1.0/files/downloadFile/" + obj.mainPicId + "\" alt=\"\"></a></div>\n" +
-                    "            <div class=\"pinpai\"><a href=\"#\">" + obj.name + "</a></div>\n" +
-                    "            <div class=\"youhui\">" + postInof + "</div>\n" +
-                    "            <div class=\"jiage\">" + obj.retailPrice + "元</div>\n" +
+                var postInfo = obj.postInfo == null ? '-' : obj.postInfo;
+                var specification = obj.specification == null ? '' : obj.specification;
+                var content = "<div class=\"col-xs-6 col-md-3\">\n" +
+                    "            <div class=\"thumbnail\" data-toggle=\"tooltip\" data-placement=\"top\"\n" +
+                    "                 title=\"\">\n" +
+                    "                <img src=\"/api/1.0/files/downloadFile/" + obj.mainPicId + "\">\n" +
+                    "                <div class=\"caption\">\n" +
+                    "                    <h4>" + obj.name + specification + "</h4>\n" +
+                    "                    <p>运费：" + postInfo + "</p>\n" +
+                    "                    <p>\n" +
+                    "                    <div class=\"text-danger\"><h4>" + obj.retailPrice + "元</h4></div>\n" +
+                    "                    </p>\n" +
+                    "                </div>\n" +
+                    "            </div>\n" +
                     "        </div>";
-                html += content;
-                if ((i + 1) % 5 === 0 || (i + 1) === result.rows.length) {
-                    $("#goodsContent").append(head + html + end);
-                    html = "";
-                }
+                $("#goodsContent").append(content);
             }
-
+            tipShow();
 
         }, "json");
     }
+
 </script>
 
 </body>

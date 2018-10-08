@@ -36,6 +36,7 @@ public class GoodsController {
     public PageResult selectPage(@RequestParam(defaultValue = "1") Long pageNo, @RequestParam(defaultValue = "10")Long pageSize, HttpServletRequest request) {
         Page<Goods> page = new Page<>(pageNo, pageSize);
         QueryWrapper<Goods> queryWrapper= new QueryWrapperTool<Goods>().getQueryWrapper(request);
+        queryWrapper.orderByDesc("update_time");
         page = (Page<Goods>) goodsService.page(page, queryWrapper);
         return PageResult.instance(page);
     }

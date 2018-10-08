@@ -39,7 +39,7 @@ public class CatalogController {
     }
 
     @GetMapping("/list")
-    public Result list(HttpServletRequest request) {
+    public Result<List<Catalog>> list(HttpServletRequest request) {
         QueryWrapper<Catalog> queryWrapper= new QueryWrapperTool<Catalog>().getQueryWrapper(request);
         List<Catalog> list=  catalogService.list(queryWrapper);
         return Result.success(list);
@@ -64,7 +64,7 @@ public class CatalogController {
     }
 
     @PostMapping("/delete/{uuid}")
-    public Result delete(@PathVariable List uuid) {
+    public Result delete(@PathVariable List<String> uuid) {
         catalogService.removeByIds(uuid);
         return Result.success();
     }

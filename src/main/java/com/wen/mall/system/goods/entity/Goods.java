@@ -69,5 +69,8 @@ public class Goods implements Serializable {
         return BaseCodeProperty.getName(BaseCodeCategory.GOODS_STATUS, this.status);
     }
 
+    @ApiModelProperty(value = "商品介绍")
+    private String presentation;
+
 
 }

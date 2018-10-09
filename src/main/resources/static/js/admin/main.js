@@ -95,8 +95,11 @@ $.fn.setForm = function (jsonValue) {
                     input.val(value);
                     break;
             }
+        }
 
-
+        var textarea = obj.find("textarea[name=" + key + "]");
+        if (null != textarea && textarea.length === 1) {
+            textarea.val(value);
         }
 
     });

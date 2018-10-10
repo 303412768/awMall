@@ -31,7 +31,7 @@
         </Root>
 
         <!-- LOG "com.baeldung*" at TRACE level -->
-        <Logger name="com.wen.mall" level="trace"></Logger>
+        <Logger name="com.wen.mall" level="info"></Logger>
     </Loggers>
 
 </Configuration>

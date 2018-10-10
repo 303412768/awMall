@@ -14,7 +14,7 @@ spring:
     url: jdbc:mysql://127.0.0.1:3306/awm?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true
     #这里是配置druid连接池，以下都是druid的配置信息
     type: com.alibaba.druid.pool.DruidDataSource
-    #filters: stat,wall,log4j2
+    filters: stat,wall,log4j2
     maxActive: 20
     initialSize: 1
     maxWait: 60000

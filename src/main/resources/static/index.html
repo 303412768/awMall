@@ -28,6 +28,7 @@
             max-height: 230px;
         }
     </style>
+
 </head>
 <body>
 <nav class="navbar navbar-default navbar-static-top navbar-fixed-top  navbar-inverse" role="navigation">
@@ -116,6 +117,7 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="assets/js/lazyload.min.js"></script>
 <script>
     $(function () {
         $("[data-toggle='tooltip']").tooltip();
@@ -222,7 +224,7 @@
                 var content = "<div class=\"col-xs-6 col-md-3\">\n" +
                     "            <div class=\"thumbnail\" data-toggle=\"tooltip\" data-placement=\"top\"\n" +
                     "                 title=\"" + presentation + "\">\n" +
-                    "                <img src=\"/api/1.0/files/downloadFile/" + obj.mainPicId + "\">\n" +
+                    "                <img src='/image/default.png' data-original=\"/api/1.0/files/downloadFile/" + obj.mainPicId + "\">\n" +
                     "                <div class=\"caption\">\n" +
                     "                    <h4>" + obj.name + specification + "</h4>\n" +
                     "                    <p>运费：" + postInfo + "</p>\n" +
@@ -233,6 +235,7 @@
                     "            </div>\n" +
                     "        </div>";
                 $("#goodsContent").append(content);
+                $(".thumbnail img").lazyload();
             }
             tipShow();
 

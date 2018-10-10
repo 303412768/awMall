@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wen.mall.config.bean.PageResult;
 import com.wen.mall.config.bean.Result;
+import com.wen.mall.config.security.Authority;
 import com.wen.mall.system.goods.entity.Goods;
 import com.wen.mall.system.goods.service.IGoodsService;
 import com.wen.mall.tools.GeneratorKey;
@@ -48,10 +49,12 @@ public class GoodsController {
         return Result.success(list);
     }
 
+    @Authority(roles={"admin"})
     @GetMapping("/{uuid}")
     public Result<Goods> detail(@PathVariable String uuid) {
         return Result.success(goodsService.getById(uuid));
     }
+
 
     @PostMapping("/save")
     public Result save(Goods goods) {
@@ -61,6 +64,7 @@ public class GoodsController {
         return Result.success();
     }
 
+    @Authority(roles={"admin"})
     @PostMapping("/update")
     public Result update(Goods goods) {
         goods.setUpdateTime(LocalDateTime.now());

@@ -52,12 +52,12 @@
                 </li>
 
             </ul>
-            <form class="navbar-form navbar-left" role="search">
+            <div class="navbar-form navbar-left" role="search">
                 <div class="form-group">
                     <input type="text" style="width: 300px" class="form-control" placeholder="商品名称" id="searchText">
                 </div>
                 <button type="button" class="btn btn-default search-query" onclick="loadGoods()">搜索</button>
-            </form>
+            </div>
             <!--<ul class="nav navbar-nav navbar-right">
                 <li><a href="#"><span class="glyphicon glyphicon-user"></span> 注册</a></li>
 
@@ -130,6 +130,14 @@
         );
         initCatalogs();
         loadGoods();
+
+
+    });
+
+    $(document).keyup(function(event){
+        if(event.keyCode ==13){
+            loadGoods();
+        }
     });
 
     function tipShow() {
@@ -249,6 +257,10 @@
             loadMore()
         }
     });
+
+
+
+
 </script>
 
 <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");

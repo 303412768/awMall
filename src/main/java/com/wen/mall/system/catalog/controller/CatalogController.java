@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wen.mall.config.bean.PageResult;
 import com.wen.mall.config.bean.Result;
+import com.wen.mall.config.security.Authority;
 import com.wen.mall.system.catalog.entity.Catalog;
 import com.wen.mall.system.catalog.service.ICatalogService;
 import com.wen.mall.tools.GeneratorKey;
@@ -50,6 +51,7 @@ public class CatalogController {
         return Result.success(catalogService.getById(uuid));
     }
 
+    @Authority(roles={"admin"})
     @PostMapping("/save")
     public Result save(Catalog catalog) {
         catalog.setUuid(GeneratorKey.getKey());
@@ -57,12 +59,14 @@ public class CatalogController {
         return Result.success();
     }
 
+    @Authority(roles={"admin"})
     @PostMapping("/update")
     public Result update(Catalog catalog) {
         catalogService.updateById(catalog);
         return Result.success();
     }
 
+    @Authority(roles={"admin"})
     @PostMapping("/delete/{uuid}")
     public Result delete(@PathVariable List<String> uuid) {
         catalogService.removeByIds(uuid);

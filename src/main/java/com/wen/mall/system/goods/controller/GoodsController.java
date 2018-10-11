@@ -49,13 +49,13 @@ public class GoodsController {
         return Result.success(list);
     }
 
-    @Authority(roles={"admin"})
+
     @GetMapping("/{uuid}")
     public Result<Goods> detail(@PathVariable String uuid) {
         return Result.success(goodsService.getById(uuid));
     }
 
-
+    @Authority(roles={"admin"})
     @PostMapping("/save")
     public Result save(Goods goods) {
         goods.setUuid(GeneratorKey.getKey());
@@ -72,6 +72,7 @@ public class GoodsController {
         return Result.success();
     }
 
+    @Authority(roles={"admin"})
     @PostMapping("/delete/{uuid}")
     public Result delete(@PathVariable List uuid) {
         goodsService.removeByIds(uuid);

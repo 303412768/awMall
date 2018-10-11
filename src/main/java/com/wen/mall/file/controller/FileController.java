@@ -2,6 +2,7 @@ package com.wen.mall.file.controller;
 
 
 import com.wen.mall.config.bean.Result;
+import com.wen.mall.config.security.Authority;
 import com.wen.mall.file.entity.FileStorageProperties;
 import com.wen.mall.file.entity.UploadFileResponse;
 import com.wen.mall.file.service.impl.FileStorageService;
@@ -51,12 +52,14 @@ public class FileController {
         return fileStorageProperties.getUploadDir();
     }
 
+    @Authority(roles={"admin"})
     @PostMapping("/uploadFile")
     public Result uploadFile(@RequestParam("file") MultipartFile file) {
         String uuid = fileStorageService.storeFile(file);
         return Result.success(uuid);
     }
 
+    @Authority(roles={"admin"})
     @PostMapping("/uploadMultipleFiles")
     public List<Result> uploadMultipleFiles(@RequestParam("files") MultipartFile[] files) {
         return Arrays.asList(files)

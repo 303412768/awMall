@@ -127,8 +127,8 @@
 
     });
 
-    $(document).keyup(function(event){
-        if(event.keyCode ==13){
+    $(document).keyup(function (event) {
+        if (event.keyCode == 13) {
             loadGoods();
         }
     });
@@ -232,7 +232,7 @@
                 var content = "<div class=\"col-xs-6 col-md-3\">\n" +
                     "            <div class=\"thumbnail\" data-toggle=\"tooltip\" data-placement=\"top\"\n" +
                     "                 title=\"" + presentation + "\">\n" +
-                    "                <img id='"+obj.mainPicId+"'  src='./image/default.png' data-original=\"/api/1.0/files/downloadFile/" + obj.mainPicId + "\">\n" +
+                    "                <img id='" + obj.mainPicId + "'  src='./image/default.png' data-original=\"/api/1.0/files/downloadFile/" + obj.mainPicId + "\" />\n" +
                     "                <div class=\"caption\">\n" +
                     "                    <h4>" + obj.name + specification + "</h4>\n" +
                     "                    <p>运费：" + postInfo + "</p>\n" +
@@ -243,7 +243,7 @@
                     "            </div>\n" +
                     "        </div>";
                 $("#goodsContent").append(content);
-                $("#"+obj.mainPicId ).lazyload({
+                $("#" + obj.mainPicId).lazyload({
                     threshold: 200,
                     effect: "fadeIn"
                 });
@@ -262,8 +262,6 @@
             loadMore()
         }
     });
-
-
 
 
 </script>

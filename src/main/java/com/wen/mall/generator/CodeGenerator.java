@@ -69,7 +69,7 @@ public class CodeGenerator {
         // 包配置
         PackageConfig pc = new PackageConfig();
         pc.setModuleName(scanner("模块名"));
-        pc.setParent("com.wen.mall");
+        pc.setParent("com.wen.mall.security");
         mpg.setPackageInfo(pc);
 
         // 自定义配置

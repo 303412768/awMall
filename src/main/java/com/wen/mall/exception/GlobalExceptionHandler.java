@@ -27,6 +27,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public Result handleException(HttpServletRequest request, Exception ex) {
         logger.info("SQLException Occured:: URL=" + request.getRequestURL());
+        ex.printStackTrace();
         return Result.error(CodeMsg.SQL_ERROR);
     }
 

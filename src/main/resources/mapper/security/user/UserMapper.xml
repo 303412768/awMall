@@ -9,11 +9,14 @@
         <result column="password" property="password" />
         <result column="age" property="age" />
         <result column="wx_uuid" property="wxUuid" />
+        <result column="tel" property="tel" />
+        <result column="update_time" property="updateTime" />
+        <result column="role" property="role" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        uuid, username, password, age, wx_uuid
+        uuid, username, password, age, wx_uuid, tel, update_time, role
     </sql>
 
 </mapper>

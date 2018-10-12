@@ -7,6 +7,7 @@ import com.wen.mall.security.user.entity.User;
 import com.wen.mall.security.user.service.IUserService;
 import com.wen.mall.tools.SecurityTool;
 import com.wen.mall.tools.StaticInfo;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,7 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -37,7 +39,11 @@ public class SecurityService {
         HttpSession session = request.getSession();
         session.setAttribute(StaticInfo.SESSION_USER_KEY, user);
         List<String> roleList = new ArrayList<>();
-        roleList.add("admin");
+        String role = StringUtils.isBlank(user.getRole()) ? null : user.getRole();
+        String[] roles = role.split(",");
+        for (String s : roles) {
+            roleList.add(s);
+        }
         session.setAttribute(StaticInfo.SESSION_USER_ROLE_KEY, roleList);
 
     }

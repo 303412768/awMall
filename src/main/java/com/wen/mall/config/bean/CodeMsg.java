@@ -14,6 +14,7 @@ public class CodeMsg {
     public static CodeMsg SESSION_NOT_EXSIST =  new CodeMsg(500104,"不存在离线session数据");
     public static CodeMsg NOT_FIND_DATA = new CodeMsg(500105,"查找不到对应数据");
     public static CodeMsg SQL_ERROR = new CodeMsg(500106,"请检查提交数据合法性");
+    public static CodeMsg PARAMETER_ERROR = new CodeMsg(500107,"请检查提交数据合法性");
 
     private CodeMsg(int retCode, String message) {
         this.retCode = retCode;

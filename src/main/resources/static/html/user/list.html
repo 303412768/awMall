@@ -93,25 +93,6 @@
     }
 
 
-
-
-    function openAndUp(uuid) {
-        $('#' + uuid).fileupload({
-            dataType: 'json',
-            done: function (e, data) {
-                console.log(data.result);
-                if (data.result.code === 200) {
-                    var picId = data.result.data;
-                    $.post("/api/1.0/goods/update", {"mainPicId": picId, "uuid": uuid}, function (rs) {
-                        if (rs.code === 200) {
-                            $('#table').bootstrapTable('refresh');
-                        }
-                    }, "json");
-                }
-            }
-        });
-    }
-
     function changeRole(uuid) {
         $.post("/api/1.0/user/update", {"uuid": uuid, "role": $("#" + uuid).val()}, function (result) {
             if (rs.code === 200) {

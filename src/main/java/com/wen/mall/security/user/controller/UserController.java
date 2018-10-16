@@ -7,6 +7,7 @@ import com.wen.mall.config.bean.CodeMsg;
 import com.wen.mall.config.bean.PageResult;
 import com.wen.mall.config.bean.Result;
 import com.wen.mall.config.security.Authority;
+import com.wen.mall.security.login.service.SecurityService;
 import com.wen.mall.security.user.entity.User;
 import com.wen.mall.security.user.service.IUserService;
 import com.wen.mall.tools.GeneratorKey;
@@ -36,6 +37,8 @@ public class UserController {
 
     @Autowired
     private IUserService userService;
+    @Autowired
+    private SecurityService securityService;
 
     @Authority(roles={"admin"})
     @GetMapping("")
@@ -58,15 +61,31 @@ public class UserController {
 
     @GetMapping("/{uuid}")
     public Result<User> detail(@PathVariable String uuid) {
-        return Result.success(userService.getById(uuid));
+        User user = userService.getById(uuid);
+        user.setPassword(null);
+        return Result.success(user);
+    }
+
+    @GetMapping("/currentUser")
+    public Result<User> currentUser(HttpServletRequest request) {
+        User user= (User) request.getSession().getAttribute(StaticInfo.SESSION_USER_KEY);
+        return Result.success(user);
     }
 
 
     @PostMapping("/save")
-    public Result save(User user) {
+    public Result create(User user,String password,String rePassword,HttpServletRequest request ) {
         user.setUuid(GeneratorKey.getKey());
-        user.setUpdateTime(LocalDateTime.now());
-        userService.save(user);
+        if (StringUtils.isNotBlank(password) && StringUtils.isNotBlank(rePassword) && password.equals(rePassword)) {
+            user.setPassword(SecurityTool.strToMD5(password));
+            user.setUpdateTime(LocalDateTime.now());
+            user.setRole("public");
+            userService.save(user);
+            //将用户信息放置到Session
+            securityService.setUserToSession(user, request);
+        }else{
+            return Result.error(CodeMsg.PARAMETER_ERROR);
+        }
         return Result.success();
     }
 
@@ -78,7 +97,7 @@ public class UserController {
         return Result.success();
     }
 
-    @Authority(roles={"admin","public"})
+    @Authority(roles={"admin","public","agency"})
     @PostMapping("/updatePass")
     public Result updatePass(String password,String rePassword,HttpServletRequest request) {
         if (StringUtils.isNotBlank(password) && StringUtils.isNotBlank(rePassword) && password.equals(rePassword)) {
@@ -91,7 +110,7 @@ public class UserController {
         return Result.success();
     }
 
-    @Authority(roles={"admin","public"})
+    @Authority(roles={"admin","public","agency"})
     @PostMapping("/updateTel")
     public Result updateTel(String tel,HttpServletRequest request) {
         if (StringUtils.isNotBlank(tel) ) {

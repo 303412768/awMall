@@ -2,18 +2,18 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>全球购-Vivien 澳洲站 账号注册</title>
+    <title>全球购-Vivien 澳洲站 用户登陆</title>
     <link rel="stylesheet" href="../assets/bootstrap/css/bootstrap.min.css">
 
 </head>
 <body>
 
 <div class="container">
-    <h1>账号注册</h1>
+    <h1>用户登录</h1>
     <div class="row">
 
         <div class="col-md-12">
-            <form role="form" action="/api/1.0/user/save" method="post" id="userForm">
+            <form role="form" action="/api/1.0/login" method="post" id="userForm">
                 <div class="form-group">
                     <label for="name">账号</label>
                     <input type="text" class="form-control" id="name" name="username"
@@ -24,18 +24,8 @@
                     <input type="password" class="form-control" id="password" name="password"
                            placeholder="请输入名称">
                 </div>
-                <div class="form-group">
-                    <label for="name">确认密码</label>
-                    <input type="password" min="6" max="50" class="form-control" id="re-password" name="rePassword"
-                           placeholder="请输入名称">
-                </div>
-                <div class="form-group">
-                    <label for="name">手机号码</label>
-                    <input type="number" class="form-control" min="11" id="tel" name="tel"
-                           placeholder="请输入手机号码">
-                </div>
-                <button type="button" onclick="createUser()" class="btn btn-block btn-success">注册</button>
-                <a href="/index.html" class="btn btn-block btn-default">取消</a>
+                <button type="button" onclick="createUser()" class="btn btn-block btn-success">登陆</button>
+                <button type="button" class="btn btn-block btn-default">取消</button>
             </form>
         </div>
     </div>

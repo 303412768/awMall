@@ -5,6 +5,7 @@ import com.wen.mall.config.bean.Result;
 import com.wen.mall.security.login.service.SecurityService;
 import com.wen.mall.security.user.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,7 +31,7 @@ public class SecurityController {
         return Result.success();
     }
 
-    @PostMapping("/logout")
+    @GetMapping("/logout")
     public Result logout(HttpServletRequest request) {
         securityService.removeSessionInfo(request);
         return Result.success();

@@ -31,7 +31,7 @@
 
 </head>
 <body>
-<nav class="navbar navbar-default navbar-static-top navbar-fixed-top  navbar-inverse" role="navigation">
+<nav class="navbar navbar-default navbar-static-top navbar-fixed-top  navbar-inverse " role="navigation">
     <div class="container-fluid">
         <div class="navbar-header">
             <a class="navbar-brand" href="#">全球购-澳洲站</a>
@@ -58,10 +58,12 @@
                 </div>
                 <button type="button" class="btn btn-default search-query" onclick="loadGoods()">搜索</button>
             </div>
-            <!--<ul class="nav navbar-nav navbar-right">
-                <li><a href="#"><span class="glyphicon glyphicon-user"></span> 注册</a></li>
-
-            </ul>-->
+            <ul class="nav navbar-nav navbar-right">
+                <!--<li id="shopCart"><a href="#"><span class="glyphicon glyphicon-shopping-cart"></span> 购物车</a></li>-->
+                <li id="signUp"><a href="/view/signup.html"><span class="glyphicon glyphicon-user"></span> 注册</a></li>
+                <li id="login"><a href="/view/login.html"><span class="glyphicon glyphicon-user"></span> 登陆</a></li>
+                <li id="logout"><a href="#" onclick="logout()"><span class="glyphicon glyphicon-log-out"></span> 退出</a></li>
+            </ul>
         </div>
 
     </div>
@@ -119,13 +121,37 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="assets/js/lazyload.min.js"></script>
 <script>
+    var role;
+    var user;
     $(function () {
-
+        getUserInfo();
         initCatalogs();
         loadGoods();
-
-
+        $("#logout").hide();
     });
+
+    function getUserInfo() {
+        var url = "/api/1.0/user/currentUser";
+        $.get(url,function (result) {
+            if (result.code === 200 && result.data!=null) {
+                user = result.data;
+                role = user.role;
+                $("#signUp").hide();
+                $("#login").hide();
+                $("#logout").show();
+            }
+        },"json");
+    }
+
+
+    function logout(){
+        var url = "/api/1.0/logout";
+        $.get(url,function (result) {
+            if (result.code === 200 && result.data!=null) {
+                location.href = "/index.html";
+            }
+        },"json");
+    }
 
     $(document).keyup(function (event) {
         if (event.keyCode == 13) {
@@ -229,6 +255,10 @@
                 var postInfo = obj.postInfo == null ? '-' : obj.postInfo;
                 var specification = obj.specification == null ? '' : obj.specification;
                 var presentation = obj.presentation == null ? '' : obj.presentation;
+                var price ="零售价："+obj.retailPrice;
+                if (role !== null && role == "agency") {
+                    price ="代理价："+ obj.wholesalePrice;
+                }
                 var content = "<div class=\"col-xs-6 col-md-3\">\n" +
                     "            <div class=\"thumbnail\" data-toggle=\"tooltip\" data-placement=\"top\"\n" +
                     "                 title=\"" + presentation + "\">\n" +
@@ -237,7 +267,7 @@
                     "                    <h4>" + obj.name + specification + "</h4>\n" +
                     "                    <p>运费：" + postInfo + "</p>\n" +
                     "                    <p>\n" +
-                    "                    <div class=\"text-danger\"><h4>零售价：" + obj.retailPrice + "元</h4></div>\n" +
+                    "                    <div class=\"text-danger\"><h4>" + price + "元</h4></div>\n" +
                     "                    </p>\n" +
                     "                </div>\n" +
                     "            </div>\n" +

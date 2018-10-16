@@ -16,7 +16,7 @@ loadPageByModal = function (url, width, height) {
     });
 };
 
-updateLoadPageByModal = function (url,uuid, width, height) {
+updateLoadPageByModal = function (url, uuid, width, height) {
     loadPageByModal(url, width, height);
     objId = uuid;
 };
@@ -51,27 +51,27 @@ submitAndRefreshTable = function (formId, tableId) {
 
 };
 
-deleteRows = function (tableId,url,uuid) {
-    var ids="";
+deleteRows = function (tableId, url, uuid) {
+    var ids = "";
     if (uuid == null || "" == uuid) {
-        var rows=$("#"+tableId).bootstrapTable('getSelections');
-        if (rows == null || rows=="") {
+        var rows = $("#" + tableId).bootstrapTable('getSelections');
+        if (rows == null || rows == "") {
             alert("请选择数据！");
             return;
         }
         $.each(rows, function (index, obj) {
-            ids+=obj.uuid+","
+            ids += obj.uuid + ","
         });
-    }else{
+    } else {
         ids = uuid;
     }
-    $.post(url +"/"+ ids, function (result) {
+    $.post(url + "/" + ids, function (result) {
         if (result.code === 200) {
             $('#' + tableId).bootstrapTable('refresh');
         } else {
             alert(result.msg);
         }
-    },"json");
+    }, "json");
 
 
 };
@@ -88,7 +88,7 @@ $.fn.setForm = function (jsonValue) {
         var input = obj.find("input[name=" + key + "]");
         //select 类型自动回填
         obj.find("select[name=" + key + "]").val(value);
-        if (input.length===1) {
+        if (input.length === 1) {
             switch (input[0].type) {
                 case "text" :
                 case "number" :
@@ -105,27 +105,44 @@ $.fn.setForm = function (jsonValue) {
     });
 };
 
-initSelectInfo = function (selectId, category,selectedValue) {
+initSelectInfo = function (selectId, category, selectedValue) {
     var url = "/api/1.0/baseCode/" + category;
     $.get(url, function (result) {
         $.each(result, function (index, obj) {
-            $("#"+selectId).append("<option value='"+obj.code+"'>"+obj.name+"</option>");
+            $("#" + selectId).append("<option value='" + obj.code + "'>" + obj.name + "</option>");
         });
         if (null != selectedValue) {
             $("#" + selectId).val(selectedValue);
         }
-    },"json");
+    }, "json");
 };
 
 
-$.ajaxSetup( {
+$.ajaxSetup({
     //设置ajax请求结束后的执行动作
-    complete : function(XMLHttpRequest, textStatus) {
-        if(XMLHttpRequest.status==403){
+    complete: function (XMLHttpRequest, textStatus) {
+        if (XMLHttpRequest.status == 403) {
             window.location.href = './login.html';
         }
     }
 });
+
+$(function () {
+    getUserInfo();
+});
+
+function getUserInfo() {
+    var url = "/api/1.0/user/currentUser";
+    $.get(url, function (result) {
+        if (result.code === 200 && result.data !== null) {
+            if (result.data.role !== "admin") {
+                location.href = "/index.html";
+            }
+        } else {
+            location.href = "/index.html";
+        }
+    }, "json");
+}
 
 
 

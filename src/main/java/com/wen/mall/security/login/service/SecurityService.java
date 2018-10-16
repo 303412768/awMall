@@ -35,7 +35,7 @@ public class SecurityService {
     }
 
     public void setUserToSession(User user, HttpServletRequest request) {
-
+        user.setPassword(null);
         HttpSession session = request.getSession();
         session.setAttribute(StaticInfo.SESSION_USER_KEY, user);
         List<String> roleList = new ArrayList<>();

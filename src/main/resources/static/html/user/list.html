@@ -1,0 +1,131 @@
+<meta charset="UTF-8">
+<div class="content-box-large">
+    <div class="panel-heading">
+        <div class="panel-title">用户管理列表</div>
+    </div>
+    <div class="panel-body">
+        <div id="toolbar">
+            <div class="input-group form">
+                <input type="text" class="form-control" id="searchText" placeholder="请输入用户账号"/>
+                <span class="input-group-btn">
+                    <button class="btn btn-default"
+                            onclick="$('#table').bootstrapTable('refresh');">搜索</button>
+                    <button class="btn btn-danger"
+                            onclick="deleteRows('table','/api/1.0/user/delete')">删除</button>
+                </span>
+            </div>
+
+
+        </div>
+        <table id="table"></table>
+    </div>
+</div>
+<script>
+    getSelectInfo();
+    function getSelectInfo() {
+        var url = "/api/1.0/baseCode/RoleInfo";
+        $.get(url, function (result) {
+            var options = result;
+
+            $('#table').bootstrapTable({
+                height: $(window).height() - 260,
+                url: '/api/1.0/user',
+                striped: true,                      //是否显示行间隔色
+                cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                pagination: true,                   //是否显示分页（*）
+                sortable: false,                     //是否启用排序
+                sortOrder: "asc",                   //排序方式
+                sortName: "username",
+                queryParams: function (params) {
+                    var josn = {   //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
+                        "pageSize": params.pageSize,   //页面大小
+                        "pageNo": params.pageNumber,  //页码
+                        "sortOrder": params.sortOrder,
+                        "sortName": params.sortName,
+                        "query-like-username": $("#searchText").val()
+
+                    };
+                    return josn;
+                },//传递参数（*）
+                sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
+                pageNumber: 1,                       //初始化加载第一页，默认第一页
+                pageSize: 10,                       //每页的记录行数（*）
+                pageList: [10, 25, 50, 100],        //可供选择的每页的行数（*）
+                clickToSelect: false,                //是否启用点击选中行
+                uniqueId: "uuid",                     //每一行的唯一标识，一般为主键列
+                queryParamsType: "page",
+                sortable: true,
+                silent: true,
+                search: false,
+                columns: [
+                    {
+                        checkbox: true, // 显示一个勾选框
+                        align: 'center' // 居中显示
+                    }, {
+                        field: 'username',
+                        title: '账号',
+                        sortable: true
+                    }, {
+                        field: 'role',
+                        title: '角色',
+                        formatter: function formatter(value, row, index) {
+                            var html = "";
+                            if (value != null) {
+                                html += "<select id='"+row.uuid+"' onchange='changeRole(\""+row.uuid+"\")'>";
+                                $.each(options, function (i, obj) {
+                                    if (value === obj.code) {
+                                        html+="<option value='" + obj.code + "' selected>" + obj.name + "</option>";
+                                    }else{
+                                        html+="<option value='" + obj.code + "'>" + obj.name + "</option>";
+                                    }
+                                });
+                                html += "</select>";
+                            }
+                            return html;
+                        }
+                    }, {
+                        field: 'tel',
+                        title: '电话',
+                        sortable: true
+                    }]
+            });
+        }, "json");
+    }
+
+
+
+
+    function openAndUp(uuid) {
+        $('#' + uuid).fileupload({
+            dataType: 'json',
+            done: function (e, data) {
+                console.log(data.result);
+                if (data.result.code === 200) {
+                    var picId = data.result.data;
+                    $.post("/api/1.0/goods/update", {"mainPicId": picId, "uuid": uuid}, function (rs) {
+                        if (rs.code === 200) {
+                            $('#table').bootstrapTable('refresh');
+                        }
+                    }, "json");
+                }
+            }
+        });
+    }
+
+    function changeRole(uuid) {
+        $.post("/api/1.0/user/update", {"uuid": uuid, "role": $("#" + uuid).val()}, function (result) {
+            if (rs.code === 200) {
+                $('#table').bootstrapTable('refresh');
+            }
+        },"json");
+    }
+
+
+
+    $(document).keyup(function(event){
+        if(event.keyCode ==13){
+            $('#table').bootstrapTable('refresh');
+        }
+    });
+
+</script>

@@ -255,12 +255,13 @@
                 var postInfo = obj.postInfo == null ? '-' : obj.postInfo;
                 var specification = obj.specification == null ? '' : obj.specification;
                 var presentation = obj.presentation == null ? '' : obj.presentation;
-                var price ="<h4>零售价："+obj.retailPrice+"元</h4>";
+                var price ="";
+                var retailPrice = "<h4>零售价："+obj.retailPrice+"元</h4>";
                 if (role !== null && role == "agency" || role==="admin") {
-                    price = "<h5>";
-                    price +="零售价："+obj.retailPrice+"元";
-                    price +="(代理价："+ obj.wholesalePrice+"元)";
-                    price += "</h5>";
+                    retailPrice = "<h5>零售价："+obj.retailPrice+"元</h5>";
+                    price =   "                    <p>\n" +
+                    "                    <div class=\"text-danger\"><h5>代理价："+obj.wholesalePrice+"元</h5></div>\n" +
+                    "                    </p>\n" ;
                 }
                 var content = "<div class=\"col-xs-6 col-md-3\">\n" +
                     "            <div class=\"thumbnail\" data-toggle=\"tooltip\" data-placement=\"top\"\n" +
@@ -270,8 +271,8 @@
                     "                    <h4>" + obj.name + specification + "</h4>\n" +
                     "                    <p>运费：" + postInfo + "</p>\n" +
                     "                    <p>\n" +
-                    "                    <div class=\"text-danger\">" + price + "</div>\n" +
-                    "                    </p>\n" +
+                    "                    <div class=\"text-danger\">"+retailPrice+"</div>\n" +
+                    "                    </p>\n" + price+
                     "                </div>\n" +
                     "            </div>\n" +
                     "        </div>";

@@ -48,13 +48,14 @@
         </div>
         <div class="collapse navbar-collapse" id="responsive-navbar">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="#" onclick="setCatalogId(null,'首页')">首页</a></li>
+                <li class="active"><a href="#" onclick="setCatalogId(null,'全部商品')">首页</a></li>
                 <li class="active"><a href="#" target="_blank">Vivien 土澳生活分享</a></li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         商品分类 <b class="caret"></b>
                     </a>
                     <ul class="dropdown-menu" id="catalogIdUL">
+                        <li><a href="#" onclick="setCatalogId(null,'全部商品')">全部商品</a></li>
                         <!-- <li><a href="#">奶粉</a></li>
                          <li><a href="#">Health Care</a></li>
                          <li><a href="#">Nation</a></li>-->
@@ -237,6 +238,7 @@
         if (no == null || no === 1 || no == undefined) {
             $("#goodsContent").empty();
             pageNo = 1;
+            currentPageNo=1;
             console.log("清理DIV");
         } else {
             pageNo = no;

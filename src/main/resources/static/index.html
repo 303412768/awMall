@@ -10,7 +10,7 @@
     <style>
 
         div .thumbnail {
-            height: 375px;
+            height: 405px;
         }
 
         .thumbnail .caption {
@@ -29,6 +29,8 @@
             max-height: 230px;
         }
     </style>
+    <link rel="stylesheet" href="bootstrap/4.0/css/bootoast.css">
+
 
 </head>
 <body>
@@ -70,7 +72,8 @@
                 <!--<li id="shopCart"><a href="#"><span class="glyphicon glyphicon-shopping-cart"></span> 购物车</a></li>-->
                 <li id="signUp"><a href="/view/signup.html"><span class="glyphicon glyphicon-user"></span> 注册</a></li>
                 <li id="login"><a href="/view/login.html"><span class="glyphicon glyphicon-user"></span> 登陆</a></li>
-                <li id="logout"><a href="#" onclick="logout()"><span class="glyphicon glyphicon-log-out"></span> 退出</a></li>
+                <li id="logout"><a href="#" onclick="logout()"><span class="glyphicon glyphicon-log-out"></span> 退出</a>
+                </li>
             </ul>
         </div>
 
@@ -79,13 +82,13 @@
 
 <div class="container">
     <div class="row" style="margin-top: 60px">
-        <div class="col-xs-6 col-md-6">
+        <div class="col-xs-12 col-md-6">
             <h2 id="catalogTitle">首页</h2>
             <h2>
                 <small>当前只开放商品查询以及询价，后续功能正在开发中。如果您挑选好心仪的商品或者需要的商品未能查询到可以直接与Vivien联系。</small>
             </h2>
         </div>
-        <div class="col-xs-6 col-md-6">
+        <div class="col-xs-12 col-md-6">
             <div class="media">
                 <a class="pull-left" href="#">
                     <img style="height: 100px;width: 100px"
@@ -128,6 +131,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="assets/js/lazyload.min.js"></script>
+<script src="bootstrap/common/bootoast.js"></script>
 <script>
     var role;
     var user;
@@ -140,25 +144,25 @@
 
     function getUserInfo() {
         var url = "/api/1.0/user/currentUser";
-        $.get(url,function (result) {
-            if (result.code === 200 && result.data!=null) {
+        $.get(url, function (result) {
+            if (result.code === 200 && result.data != null) {
                 user = result.data;
                 role = user.role;
                 $("#signUp").hide();
                 $("#login").hide();
                 $("#logout").show();
             }
-        },"json");
+        }, "json");
     }
 
 
-    function logout(){
+    function logout() {
         var url = "/api/1.0/logout";
-        $.get(url,function (result) {
-            if (result.code === 200 && result.data!=null) {
+        $.get(url, function (result) {
+            if (result.code === 200 && result.data != null) {
                 location.href = "/index.html";
             }
-        },"json");
+        }, "json");
     }
 
     $(document).keyup(function (event) {
@@ -263,13 +267,13 @@
                 var postInfo = obj.postInfo == null ? '-' : obj.postInfo;
                 var specification = obj.specification == null ? '' : obj.specification;
                 var presentation = obj.presentation == null ? '' : obj.presentation;
-                var price ="";
-                var retailPrice = "<h4>零售价："+obj.retailPrice+"元</h4>";
-                if (role !== null && role == "agency" || role==="admin") {
-                    retailPrice = "<h5>零售价："+obj.retailPrice+"元</h5>";
-                    price =   "                    <p>\n" +
-                    "                    <div class=\"text-danger\"><h5>代理价："+obj.wholesalePrice+"元</h5></div>\n" +
-                    "                    </p>\n" ;
+                var price = "";
+                var retailPrice = "<h4>零售价：" + obj.retailPrice + "元</h4>";
+                if (role !== null && role == "agency" || role === "admin") {
+                    retailPrice = "<h5>零售价：" + obj.retailPrice + "元</h5>";
+                    price = "                    <p>\n" +
+                        "                    <div class=\"text-danger\"><h5>代理价：" + obj.wholesalePrice + "元</h5></div>\n" +
+                        "                    </p>\n";
                 }
                 var content = "<div class=\"col-xs-12 col-md-3\">\n" +
                     "            <div class=\"thumbnail\" data-toggle=\"tooltip\" data-placement=\"top\"\n" +
@@ -279,9 +283,10 @@
                     "                    <h4>" + obj.name + specification + "</h4>\n" +
                     "                    <p>运费：" + postInfo + "</p>\n" +
                     "                    <p>\n" +
-                    "                    <div class=\"text-danger\">"+retailPrice+"</div>\n" +
-                    "                    </p>\n" + price+
+                    "                    <div class=\"text-danger\">" + retailPrice + "</div>\n" +
+                    "                    </p>\n" + price +
                     "                </div>\n" +
+                    "<button type=\"button\" class=\"btn btn-warning btn-block btn-sm\" onclick='addToCart(\""+obj.uuid+"\")' >加入购物车</button>" +
                     "            </div>\n" +
                     "        </div>";
                 $("#goodsContent").append(content);
@@ -304,6 +309,16 @@
             loadMore()
         }
     });
+
+
+    function addToCart(goodsId) {
+        bootoast({
+            message: '小主，已经放到篮子里了~~~',
+            position:'top-center',
+            type: 'success',
+            timeout:2
+        });
+    }
 
 
 </script>

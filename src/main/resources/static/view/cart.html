@@ -26,11 +26,11 @@
 
 </head>
 <body>
+<nav class="navbar navbar-dark bg-dark  fixed-top ">
+    <a class="navbar-brand" href="#"><span class="text-danger">合计：</span><span class="text-danger" id="totalPrice">0</span><span class="text-danger">元</span></a>
 
-<div class="container" id="container">
-    <div class="row">
-        <h3>购物车</h3>
-    </div>
+</nav>
+<div class="container" id="container" style="margin-top: 80px">
     <!--<hr />
     <div class="row">
         <div class="col-md-4 col-xl-4">
@@ -171,6 +171,7 @@
             var obj = items[index];
             total += obj.price * obj.quantity;
         }
+        $("#totalPrice").text(total);
         console.log("Total：" + total);
     }
 

@@ -1,5 +1,9 @@
 server:
-  port: 80
+  port: 443
+  ssl:
+    key-store: classpath:viviendg.com.jks
+    key-password:
+    key-store-password:
 
 #spring
 spring:

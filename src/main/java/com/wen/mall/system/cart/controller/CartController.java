@@ -1,6 +1,7 @@
 package com.wen.mall.system.cart.controller;
 
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wen.mall.config.bean.CodeMsg;
@@ -9,6 +10,8 @@ import com.wen.mall.config.bean.Result;
 import com.wen.mall.config.security.Authority;
 import com.wen.mall.security.user.entity.User;
 import com.wen.mall.system.cart.entity.Cart;
+import com.wen.mall.system.cart.entity.CartGoods;
+import com.wen.mall.system.cart.service.ICartGoodsService;
 import com.wen.mall.system.cart.service.ICartService;
 import com.wen.mall.tools.GeneratorKey;
 import com.wen.mall.tools.QueryWrapperTool;
@@ -18,7 +21,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -35,6 +40,9 @@ public class CartController {
     @Autowired
     private ICartService cartService;
 
+    @Autowired
+    private ICartGoodsService cartGoodsService;
+
 
     @GetMapping("")
     public PageResult selectPage(@RequestParam(defaultValue = "1") Long pageNo, @RequestParam(defaultValue = "10")Long pageSize, HttpServletRequest request) {
@@ -48,8 +56,8 @@ public class CartController {
     @Authority(roles={"admin","agency","public"})
     @GetMapping("/list")
     public Result list(HttpServletRequest request) {
-        QueryWrapper<Cart> queryWrapper= new QueryWrapperTool<Cart>().getQueryWrapper(request);
-        List<Cart> list=  cartService.list(queryWrapper);
+        QueryWrapper<CartGoods> queryWrapper= new QueryWrapperTool<CartGoods>().getQueryWrapper(request);
+        List<CartGoods> list=  cartGoodsService.list(queryWrapper);
         return Result.success(list);
     }
 
@@ -89,9 +97,13 @@ public class CartController {
     }
 
     @Authority(roles={"admin","agency","public"})
-    @PostMapping("/delete/{uuid}")
-    public Result delete(@PathVariable List uuid) {
-        cartService.removeByIds(uuid);
+    @PostMapping("/delete/{goodsId}")
+    public Result delete(@PathVariable String goodsId,HttpServletRequest request) {
+        User user = SessionTool.getCurrentUser(request);
+        Map<String, Object> map = new HashMap<>();
+        map.put("goods_id", goodsId);
+        map.put("user_id", user.getUuid());
+        cartService.removeByMap(map);
         return Result.success();
     }
 

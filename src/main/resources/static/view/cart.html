@@ -27,11 +27,11 @@
 </head>
 <body>
 
-<div class="container">
+<div class="container" id="container">
     <div class="row">
         <h3>购物车</h3>
     </div>
-    <hr />
+    <!--<hr />
     <div class="row">
         <div class="col-md-4 col-xl-4">
             <img class="img-rounded" src="/api/1.0/files/downloadFile/2cf8578c-6f6e-4d68-bf52-1ce2b9f62273"/>
@@ -57,34 +57,12 @@
             </p>
         </div>
 
-    </div>
-   <hr />
-    <div class="row">
-        <div class="col-md-4">
-            <img class="img-rounded" src="/api/1.0/files/downloadFile/2cf8578c-6f6e-4d68-bf52-1ce2b9f62273"/>
-        </div>
-        <div class="col-md-8">
-            <h4>Refresh 眼药水（120ml）
-                <button type="button" class="btn btn-outline-danger">删除</button>
-            </h4>
-            <p>运费：4个25元，6个30元</p>
-            <p>
-            <div class="text-danger"><h4>9999元</h4></div>
-            </p>
-            <p>
-            <div class="input-group">
-                <div class="input-group-prepend">
-                    <span class="input-group-text">-</span>
-                </div>
-                <input type="number" class="form-control" value="1"/>
-                <div class="input-group-prepend">
-                    <span class="input-group-text">+</span>
-                </div>
-            </div>
-            </p>
-        </div>
+    </div>-->
 
-    </div>
+
+</div>
+
+<div class="container">
     <div class="row">
         <div class="col-md-12">
 
@@ -93,17 +71,151 @@
 
         </div>
     </div>
-
 </div>
 
 <script src="../assets/js/jquery.min.js"></script>
 <script src="../bootstrap/4.0/js/bootstrap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
         integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
-        crossorigin="anonymous"></script>
+        crossorigin="anonymous"></script>-->
 <script src="../assets/js/jquery.form.min.js"></script>
 <script>
+    var role;
+    var items = {};
+    var total = 0;
+    $(function () {
+        getUserInfo();
 
+    });
+
+
+    function getUserInfo() {
+        var url = "/api/1.0/user/currentUser";
+        $.get(url, function (result) {
+            console.log(result.code === 200);
+            if (result.code === 200) {
+                var user = result.data;
+                role = user.role;
+                getItems();
+            }
+        }, "json");
+    }
+
+    function getItems() {
+        $.get("/api/1.0/cart/list", {"sortName": "updateTime", "sortOrder": "asc"}, function (result) {
+            if (result.code === 200 && result.data !== null) {
+                items = result.data;
+                $.each(items, function (index, obj) {
+                    var price = role == "admin" || role == "agency" ? obj.wholesalePrice : obj.retailPrice;
+                    items[index].price = price;
+                    var allPrice = price * obj.quantity;
+                    items[index].allPrice = allPrice;
+                    var html = '<hr  id="hr-' + obj.uuid + '"/>\n' +
+                        '    <div class="row" id="row-' + obj.uuid + '">\n' +
+                        '        <div class="col-md-4 col-xl-4">\n' +
+                        '            <img class="img-rounded" src="/api/1.0/files/downloadFile/' + obj.mainPicId + '"/>\n' +
+                        '        </div>\n' +
+                        '        <div class="col-md-8 col-xl-8">\n' +
+                        '            <h4>' + obj.name + '）\n' +
+                        '                <button type="button" class="btn btn-outline-danger" onclick="delItem(\'' + obj.uuid + '\')">删除</button>\n' +
+                        '            </h4>\n' +
+                        '            <p>' + obj.postInfo + '</p>\n' +
+                        '            <p>\n' +
+                        '            <div class="text-danger"><h4>单价：' + price + '元</h4></div>\n' +
+                        '            </p>\n' +
+                        '            <p>\n' +
+                        '            <div class="input-group">\n' +
+                        '                <div class="input-group-prepend" onclick="reduceCount(\''+obj.uuid+'\')">\n' +
+                        '                    <span class="input-group-text">-</span>\n' +
+                        '                </div>\n' +
+                        '                <input type="number" class="form-control" onchange="changeInput(\''+obj.uuid+'\')" id="count-'+obj.uuid+'" value="1"/>\n' +
+                        '                <div class="input-group-prepend"  onclick="addCount(\''+obj.uuid+'\')">\n' +
+                        '                    <span class="input-group-text">+</span>\n' +
+                        '                </div>\n' +
+                        '            </div>\n' +
+                        '            </p>\n' +
+                     /*   '            <p>\n' +
+                        '            <div class="text-danger"><h4>合计：' + allPrice + '元</h4></div>\n' +
+                        '            </p>\n' +*/
+                        '        </div>\n' +
+                        '\n' +
+                        '</div> ';
+                    $("#container").append(html);
+                });
+                totalPrice();
+            }
+        }, "json")
+    }
+
+
+    function delItem(goodsId) {
+        $.post("/api/1.0/cart/delete/" + goodsId, function (result) {
+            if(result.code==200){
+                for (var index = 0; index < items.length; index++) {
+                    var obj = items[index];
+                    if (goodsId == obj.uuid) {
+                        items.splice(index, 1);
+
+                    }
+                }
+                totalPrice();
+                $("#hr-" + goodsId).remove();
+                $("#row-" + goodsId).remove();
+            }
+        },"json");
+    }
+
+    function totalPrice() {
+        total = 0;
+        for (var index = 0; index < items.length; index++) {
+            var obj = items[index];
+            total += obj.price * obj.quantity;
+        }
+        console.log("Total：" + total);
+    }
+
+    function addCount(goodsId) {
+        for (var index = 0; index < items.length; index++) {
+            var obj = items[index];
+            if (goodsId == obj.uuid) {
+                var count = obj.quantity + 1 > 1 ? obj.quantity + 1 : 1;
+                obj.quantity = count;
+                $("#count-" + goodsId).val(count);
+                break;
+            }
+        }
+        totalPrice();
+    }
+
+    function reduceCount(goodsId) {
+        for (var index = 0; index < items.length; index++) {
+            var obj = items[index];
+            if (goodsId == obj.uuid) {
+                var count = obj.quantity - 1 > 1 ? obj.quantity - 1 : 1;
+                obj.quantity = count;
+                $("#count-" + goodsId).val(count);
+                break;
+            }
+        }
+        totalPrice();
+    }
+
+    function changeInput(goodsId) {
+        var num=$("#count-" + goodsId).val();
+        if (num <= 0) {
+            num = 1;
+        }
+
+        for (var index = 0; index < items.length; index++) {
+            var obj = items[index];
+            if (goodsId == obj.uuid) {
+                $("#count-" + goodsId).val(num);
+                items[index].quantity = num;
+                break;
+            }
+        }
+        totalPrice();
+    }
 </script>
 </body>
 </html>

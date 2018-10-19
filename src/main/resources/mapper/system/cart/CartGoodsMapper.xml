@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wen.mall.system.cart.mapper.CartGoodsMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.wen.mall.system.cart.entity.CartGoods">
+        <result column="uuid" property="uuid" />
+        <result column="NAME" property="name" />
+        <result column="main_pic_id" property="mainPicId" />
+        <result column="post_info" property="postInfo" />
+        <result column="presentation" property="presentation" />
+        <result column="specification" property="specification" />
+        <result column="retail_price" property="retailPrice" />
+        <result column="wholesale_price" property="wholesalePrice" />
+        <result column="update_time" property="updateTime" />
+        <result column="user_id" property="userId" />
+        <result column="quantity" property="quantity" />
+        <result column="cart_id" property="cartId" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        uuid, NAME, main_pic_id, post_info, presentation, specification, retail_price, wholesale_price, update_time, user_id, quantity, cart_id
+    </sql>
+
+</mapper>

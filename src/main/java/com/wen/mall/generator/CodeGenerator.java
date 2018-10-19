@@ -69,7 +69,7 @@ public class CodeGenerator {
         // 包配置
         PackageConfig pc = new PackageConfig();
         pc.setModuleName(scanner("模块名"));
-        pc.setParent("com.wen.mall.security");
+        pc.setParent("com.wen.mall.system");
         mpg.setPackageInfo(pc);
 
         // 自定义配置
@@ -84,7 +84,7 @@ public class CodeGenerator {
             @Override
             public String outputFile(TableInfo tableInfo) {
                 // 自定义输入文件名称
-                return projectPath + "/src/main/resources/mapper/" + pc.getModuleName()
+                return projectPath + "/src/main/resources/mapper/system/" + pc.getModuleName()
                         + "/" + tableInfo.getEntityName() + "Mapper" + StringPool.DOT_XML;
             }
         });

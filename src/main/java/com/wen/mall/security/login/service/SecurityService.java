@@ -40,10 +40,9 @@ public class SecurityService {
         session.setAttribute(StaticInfo.SESSION_USER_KEY, user);
         List<String> roleList = new ArrayList<>();
         String role = StringUtils.isBlank(user.getRole()) ? null : user.getRole();
+        assert role != null;
         String[] roles = role.split(",");
-        for (String s : roles) {
-            roleList.add(s);
-        }
+        Collections.addAll(roleList, roles);
         session.setAttribute(StaticInfo.SESSION_USER_ROLE_KEY, roleList);
 
     }

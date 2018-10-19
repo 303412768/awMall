@@ -10,7 +10,7 @@
     <style>
 
         div .thumbnail {
-            height: 380px;
+            height: 435px;
         }
 
         .thumbnail .caption {
@@ -70,9 +70,9 @@
                 <button type="button" class="btn btn-default search-query" onclick="loadGoods()">搜索</button>
             </div>
             <ul class="nav navbar-nav navbar-right">
-                <!--<li id="shopCart"><a href="#"><span class="glyphicon glyphicon-shopping-cart"></span> 购物车</a></li>-->
-                <li id="signUp"><a href="/view/signup.html"><span class="glyphicon glyphicon-user"></span> 注册</a></li>
-                <li id="login"><a href="/view/login.html"><span class="glyphicon glyphicon-user"></span> 登陆</a></li>
+                <li id="shopCart"><a href="./view/cart.html"><span class="glyphicon glyphicon-shopping-cart"></span> 购物车</a></li>
+                <li id="signUp"><a href="./view/signup.html"><span class="glyphicon glyphicon-user"></span> 注册</a></li>
+                <li id="login"><a href="./view/login.html"><span class="glyphicon glyphicon-user"></span> 登陆</a></li>
                 <li id="logout"><a href="#" onclick="logout()"><span class="glyphicon glyphicon-log-out"></span> 退出</a>
                 </li>
             </ul>
@@ -134,6 +134,25 @@
 <script src="assets/js/lazyload.min.js"></script>
 <script src="bootstrap/common/bootoast.js"></script>
 <script>
+
+    toastr.options = {
+        "closeButton": false,
+        "debug": false,
+        "newestOnTop": false,
+        "progressBar": false,
+        "positionClass": "toast-top-center",
+        "preventDuplicates": false,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "3000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    }
+
     var role;
     var user;
     $(function () {
@@ -141,6 +160,8 @@
         initCatalogs();
         loadGoods();
         $("#logout").hide();
+        $("#shopCart").hide();
+
     });
 
     function getUserInfo() {
@@ -152,6 +173,7 @@
                 $("#signUp").hide();
                 $("#login").hide();
                 $("#logout").show();
+                $("#shopCart").show();
             }
         }, "json");
     }
@@ -287,8 +309,9 @@
                     "                    <p>\n" +
                     "                    <div class=\"text-danger\">" + retailPrice + "</div>\n" +
                     "                    </p>\n" + price +
+                    "<button type=\"button\"  class=\"btn btn-warning btn-block btn-sm\" onclick='addToCart(\""+obj.uuid+"\")' >加入购物车</button>" +
                     "                </div>\n" +
-                    /*"<button type=\"button\" class=\"btn btn-warning btn-block btn-sm\" onclick='addToCart(\""+obj.uuid+"\")' >加入购物车</button>" +*/
+
                     "            </div>\n" +
                     "        </div>";
                 $("#goodsContent").append(content);
@@ -314,12 +337,19 @@
 
 
     function addToCart(goodsId) {
-        bootoast({
-            message: '小主，已经放到篮子里了~~~',
-            position:'top-center',
-            type: 'success',
-            timeout:2
-        });
+        if (role == null) {
+            toastr.error('此操作需要登录才可以！');
+            return;
+        }
+        $.post("./api/1.0/cart/save", {"goodsId": goodsId}, function (result) {
+            if (result.code == 200) {
+                toastr.success('亲，眼光蛮不错的么，已经放到篮子了O(∩_∩)O~');
+            }else{
+                toastr.error('出了点问题，没有放入成功~');
+            }
+
+        },"json");
+
     }
 
 

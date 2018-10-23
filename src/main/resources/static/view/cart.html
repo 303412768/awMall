@@ -27,7 +27,9 @@
 </head>
 <body>
 <nav class="navbar navbar-dark bg-dark  fixed-top ">
-    <a class="navbar-brand" href="#"><span class="text-danger">商品合计：</span><span class="text-danger" id="totalPrice">0</span><span class="text-danger">元</span>（运费以实际为准）</a>
+    <a class="navbar-brand" href="#"><span class="text-danger">商品合计：</span><span class="text-danger"
+                                                                                 id="totalPrice">0</span><span
+            class="text-danger">元</span>（运费以实际为准）</a>
 
 </nav>
 <div class="container" id="container" style="margin-top: 80px">
@@ -61,23 +63,52 @@
 
 
 </div>
+<div class="container">
+    <hr/>
+    <div class="row">
+        <div class="col-md-12">
+            <label class="control-label">收件人姓名：</label>
+            <input type="text" class="form-control" maxlength="20" id="name"/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <label class="control-label">收件人电话：</label>
+            <input type="text" class="form-control" maxlength="20" id="tel"/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <label class="control-label">身份证号码：</label>
+            <input type="text" class="form-control" maxlength="25" id="identity"/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <label class="control-label">收件人地址：</label>
+            <input type="text" class="form-control" maxlength="100" id="address"/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <label class="control-label">联系微信号：</label>
+            <input type="text" class="form-control" maxlength="25" id="wxId"/>
+        </div>
+    </div>
 
+    <hr/>
+</div>
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-
-            <button type="button" class="btn btn-block btn-success">生成订单</button>
+            <button type="button" class="btn btn-block btn-success" onclick="add2Order()">生成订单</button>
             <a href="/index.html" class="btn btn-block btn-default">返回首页</a>
-
         </div>
     </div>
 </div>
 
 <script src="../assets/js/jquery.min.js"></script>
 <script src="../bootstrap/4.0/js/bootstrap.min.js"></script>
-<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
-        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
-        crossorigin="anonymous"></script>-->
 <script src="../assets/js/jquery.form.min.js"></script>
 <script>
     var role;
@@ -85,7 +116,6 @@
     var total = 0;
     $(function () {
         getUserInfo();
-
     });
 
 
@@ -95,6 +125,10 @@
             console.log(result.code === 200);
             if (result.code === 200) {
                 var user = result.data;
+                if (user == null) {
+                    location.href = "/index.html";
+                    return;
+                }
                 role = user.role;
                 getItems();
             }
@@ -125,18 +159,18 @@
                         '            </p>\n' +
                         '            <p>\n' +
                         '            <div class="input-group">\n' +
-                        '                <div class="input-group-prepend" onclick="reduceCount(\''+obj.uuid+'\')">\n' +
+                        '                <div class="input-group-prepend" onclick="reduceCount(\'' + obj.uuid + '\')">\n' +
                         '                    <span class="input-group-text">-</span>\n' +
                         '                </div>\n' +
-                        '                <input type="number" class="form-control" onchange="changeInput(\''+obj.uuid+'\')" id="count-'+obj.uuid+'" value="1"/>\n' +
-                        '                <div class="input-group-prepend"  onclick="addCount(\''+obj.uuid+'\')">\n' +
+                        '                <input type="number" class="form-control" onchange="changeInput(\'' + obj.uuid + '\')" id="count-' + obj.uuid + '" value="1"/>\n' +
+                        '                <div class="input-group-prepend"  onclick="addCount(\'' + obj.uuid + '\')">\n' +
                         '                    <span class="input-group-text">+</span>\n' +
                         '                </div>\n' +
                         '            </div>\n' +
                         '            </p>\n' +
-                     /*   '            <p>\n' +
-                        '            <div class="text-danger"><h4>合计：' + allPrice + '元</h4></div>\n' +
-                        '            </p>\n' +*/
+                        /*   '            <p>\n' +
+                           '            <div class="text-danger"><h4>合计：' + allPrice + '元</h4></div>\n' +
+                           '            </p>\n' +*/
                         '        </div>\n' +
                         '\n' +
                         '</div> ';
@@ -150,7 +184,7 @@
 
     function delItem(goodsId) {
         $.post("/api/1.0/cart/delete/" + goodsId, function (result) {
-            if(result.code==200){
+            if (result.code == 200) {
                 for (var index = 0; index < items.length; index++) {
                     var obj = items[index];
                     if (goodsId == obj.uuid) {
@@ -162,7 +196,7 @@
                 $("#hr-" + goodsId).remove();
                 $("#row-" + goodsId).remove();
             }
-        },"json");
+        }, "json");
     }
 
     function totalPrice() {
@@ -172,7 +206,8 @@
             total += obj.price * obj.quantity;
         }
         $("#totalPrice").text(total);
-        console.log("Total：" + total);
+        console.log(items);
+
     }
 
     function addCount(goodsId) {
@@ -202,7 +237,7 @@
     }
 
     function changeInput(goodsId) {
-        var num=$("#count-" + goodsId).val();
+        var num = $("#count-" + goodsId).val();
         if (num <= 0) {
             num = 1;
         }
@@ -216,6 +251,33 @@
             }
         }
         totalPrice();
+    }
+
+    function add2Order() {
+        var json = {
+            "name": $("#name").val(),
+            "tel": $("#tel").val(),
+            "address": $("#address").val(),
+            "identity": $("#identity").val(),
+            "wxId": $("#wxId").val(),
+            "total": $("#total").val(),
+            "orderGoodsVOList": items
+        };
+
+
+        $.ajax({
+            type: "POST",
+            url: "/api/1.0/order/add",
+            dataType: "json",
+            contentType: "application/json",
+            data: JSON.stringify(json),
+            success: function (data) {
+
+            }
+
+
+        });
+
     }
 </script>
 </body>

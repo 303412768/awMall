@@ -16,7 +16,7 @@ public class CodeMsg {
     public static CodeMsg SQL_ERROR = new CodeMsg(500106,"请检查提交数据合法性");
     public static CodeMsg PARAMETER_ERROR = new CodeMsg(500107,"请检查提交数据合法性");
 
-    private CodeMsg(int retCode, String message) {
+    public CodeMsg(int retCode, String message) {
         this.retCode = retCode;
         this.message = message;
     }

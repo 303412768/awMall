@@ -250,18 +250,18 @@
 
         }
         if (currentPageNo === totalPages) {
-            console.log("hide load div");
+
             $("#loadMoreDiv").hide();
         }
     }
 
     function loadGoods(no) {
-        console.log("当前加载页码：" + no);
+
         if (no == null || no === 1 || no == undefined) {
             $("#goodsContent").empty();
             pageNo = 1;
             currentPageNo=1;
-            console.log("清理DIV");
+
         } else {
             pageNo = no;
         }

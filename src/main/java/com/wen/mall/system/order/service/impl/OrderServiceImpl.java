@@ -128,6 +128,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         address.setTel(vo.getTel());
         address.setUserId(order.getUserId());
         address.setWxId(vo.getWxId());
+        address.setUpdateTime(LocalDateTime.now());
         addressService.save(address);
     }
 

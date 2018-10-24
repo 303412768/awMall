@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="../bootstrap/4.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="../bootstrap/4.0/css/bootstrap-grid.css">
     <link rel="stylesheet" href="../bootstrap/4.0/css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="../bootstrap/4.0/css/bootoast.css">
     <style>
         .img-rounded {
             max-height: 200px;
@@ -110,13 +111,28 @@
 <script src="../assets/js/jquery.min.js"></script>
 <script src="../bootstrap/4.0/js/bootstrap.min.js"></script>
 <script src="../assets/js/jquery.form.min.js"></script>
+<script src="../bootstrap/common/bootoast.js"></script>
 <script>
     var role;
     var items = {};
     var total = 0;
     $(function () {
         getUserInfo();
+        getRecentPostInfo();
     });
+
+    function getRecentPostInfo() {
+        $.get("/api/1.0/order/details/lastAddress", function (result) {
+            if (result.code === 200 && result.data != null) {
+                var address = result.data;
+                $("#name").val(address.name);
+                $("#tel").val(address.tel);
+                $("#address").val(address.address);
+                $("#identity").val(address.identity);
+                $("#wxId").val(address.wxId);
+            }
+        }, "json");
+    }
 
 
     function getUserInfo() {
@@ -254,6 +270,10 @@
     }
 
     function add2Order() {
+        if (items == null || "" == items) {
+            toastr.error('购物车中没有任何商品~');
+            return;
+        }
         var json = {
             "name": $("#name").val(),
             "tel": $("#tel").val(),
@@ -271,11 +291,13 @@
             dataType: "json",
             contentType: "application/json",
             data: JSON.stringify(json),
-            success: function (data) {
-
+            success: function (result) {
+                if(result.code===200 && result.data!=null){
+                    location.href = "./cart-success-info.html?orderNo=" + result.data;
+                }else{
+                    toastr.error('好像发生了什么错误！请联系管理员！~');
+                }
             }
-
-
         });
 
     }

@@ -2,6 +2,7 @@ package com.wen.mall.system.order.controller;
 
 import com.wen.mall.config.bean.CodeMsg;
 import com.wen.mall.config.bean.Result;
+import com.wen.mall.config.security.Authority;
 import com.wen.mall.exception.BussinessException;
 import com.wen.mall.security.user.entity.User;
 import com.wen.mall.system.order.entity.CartToOrderVO;
@@ -22,6 +23,7 @@ public class OrderController {
     @Autowired
     private IOrderService orderService;
 
+    @Authority(roles={"admin","agency","public"})
     @PostMapping("/add")
     public Result save(@RequestBody CartToOrderVO vo, HttpServletRequest request) {
         try {

@@ -2,10 +2,59 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Vivien 澳洲-订单信息</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="../bootstrap/4.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../bootstrap/4.0/css/bootstrap-grid.css">
+    <link rel="stylesheet" href="../bootstrap/4.0/css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="../bootstrap/4.0/css/bootoast.css">
+    <style>
+        .img-rounded {
+            max-height: 200px;
+        }
+
+        hr {
+            -moz-border-bottom-colors: none;
+            -moz-border-image: none;
+            -moz-border-left-colors: none;
+            -moz-border-right-colors: none;
+            -moz-border-top-colors: none;
+            border-style: solid none;
+            border-width: 1px 0;
+            margin: 18px 0;
+        }
+    </style>
 </head>
 <body>
-<h1>购物成功</h1>
+<nav class="navbar navbar-dark bg-dark  fixed-top ">
+    <a class="navbar-brand" href="#">成功下单</a>
+
+</nav>
+<div class="container" id="container" style="margin-top: 80px">
+
+    <div class="row">
+        <div class="col-md-4 col-xl-4">
+            <img class="img-rounded" src="/image/wen_qr_code.png"/>
+        </div>
+        <div class="col-md-8 col-xl-8">
+            <p>订单编号： <input type="text"  id="orderNoText" /></p>
+            <h4 ><button type="button" class="btn btn-outline-danger" onclick="copyOrderNo()">点击按钮复制订单号信息</button></h4>
+            <p>微信可以扫码或者长按图片添加Vivien好友，发送订单号确认订单</p>
+            <p>Vivien也会通过微信主动联系你的吆！~</p>
+        </div>
+
+    </div>
+
+
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <a href="/index.html" class="btn btn-block btn-default">返回首页</a>
+
+        </div>
+    </div>
+</div>
 <script src="../assets/js/jquery.min.js"></script>
 <script src="../bootstrap/4.0/js/bootstrap.min.js"></script>
 <script src="../assets/js/jquery.form.min.js"></script>
@@ -14,7 +63,8 @@
 
     $(function () {
         var no = getUrlParam("orderNo");
-        alert(no);
+
+        $("#orderNoText").val(no);
     });
 
     //获取url中的参数
@@ -26,6 +76,13 @@
         //返回参数值
         if (r != null) return unescape(r[2]);
         return null;
+    }
+
+    function copyOrderNo(){
+        $("#orderNoText").select();
+        document.execCommand("Copy");
+        toastr.success('订单号复制成功~');
+
     }
 
 

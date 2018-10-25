@@ -26,11 +26,12 @@ public class OrderController {
     @Authority(roles={"admin","agency","public"})
     @PostMapping("/add")
     public Result save(@RequestBody CartToOrderVO vo, HttpServletRequest request) {
+        String orderNo;
         try {
-            orderService.addOrder(vo, (User) request.getSession().getAttribute(StaticInfo.SESSION_USER_KEY));
+            orderNo = orderService.addOrder(vo, (User) request.getSession().getAttribute(StaticInfo.SESSION_USER_KEY));
         } catch (BussinessException exception) {
             return Result.error(new CodeMsg(0,exception.getMessage()));
         }
-        return Result.success();
+        return Result.success(orderNo);
     }
 }

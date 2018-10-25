@@ -55,6 +55,9 @@ public class OrderDetail implements Serializable {
     @ApiModelProperty(value = "订单编号")
     private String orderNo;
 
+    @ApiModelProperty(value = "图片信息")
+    private String mainPic;
+
     private LocalDateTime updateTime;
 
 

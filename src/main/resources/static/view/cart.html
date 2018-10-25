@@ -102,7 +102,7 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-            <button type="button" class="btn btn-block btn-success" onclick="add2Order()">生成订单</button>
+            <button type="button" id="submit" class="btn btn-block btn-success" onclick="add2Order()">生成订单</button>
             <a href="/index.html" class="btn btn-block btn-default">返回首页</a>
         </div>
     </div>
@@ -270,6 +270,8 @@
     }
 
     function add2Order() {
+        $("#submit").attr('disabled','disabled');
+        toastr.warning('正在努力处理中！');
         if (items == null || "" == items) {
             toastr.error('购物车中没有任何商品~');
             return;
@@ -293,7 +295,7 @@
             data: JSON.stringify(json),
             success: function (result) {
                 if(result.code===200 && result.data!=null){
-                    location.href = "./cart-success-info.html?orderNo=" + result.data;
+                    location.href = "/view/cart-success-info.html?orderNo=" + result.data;
                 }else{
                     toastr.error('好像发生了什么错误！请联系管理员！~');
                 }

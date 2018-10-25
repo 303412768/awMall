@@ -16,6 +16,8 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.wen.mall.tools.GeneratorKey;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -46,6 +48,13 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     @Autowired
     private ICartService cartService;
 
+    @Autowired
+    private ApplicationEventPublisher publisher;
+
+
+    @Value("${spring.mail.base-image-path}")
+    private String baseImagePath;
+
 
     @Override
     public String addOrder(CartToOrderVO vo, User user) {
@@ -57,10 +66,12 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         }
         vo.setUserId(user.getUuid());
         Order order = initOrderInfo(vo, user);
-        initAddress(order, vo);
-        initOrderDetailAndTotalPrice(order, vo, user);
+        Address address=initAddress(order, vo);
+        List<OrderDetail> orderDetails =initOrderDetailAndTotalPrice(order, vo, user);
         save(order);
         deleteCartInfo(user.getUuid());
+        OrderMailInfo orderMailInfo = new OrderMailInfo(order,address,orderDetails,baseImagePath);
+        publisher.publishEvent(orderMailInfo);
         return order.getOrderNo();
     }
 
@@ -89,7 +100,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
      * @param vo    vo
      * @param user  user
      */
-    private void initOrderDetailAndTotalPrice(Order order, CartToOrderVO vo, User user) {
+    private List<OrderDetail> initOrderDetailAndTotalPrice(Order order, CartToOrderVO vo, User user) {
         List<OrderDetail> orderDetails = new ArrayList<>();
         BigDecimal total = new BigDecimal(0);
         String role = user.getRole();
@@ -105,10 +116,11 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
                 price = goods.getWholesalePrice();
             }
             total = total.add(price.multiply(new BigDecimal(obj.getQuantity())));
-            initOrderDetails(goods,price, order, Long.valueOf(obj.getQuantity().toString()), orderDetails);
+            initOrderDetails(goods,price, order, Long.valueOf(obj.getQuantity().toString()),obj.getMainPicId(), orderDetails);
         }
         order.setTotal(total);
         orderDetailService.saveBatch(orderDetails);
+        return orderDetails;
     }
 
     /**
@@ -118,7 +130,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
      * @param vo
      * @return
      */
-    private void initAddress(Order order, CartToOrderVO vo) {
+    private Address initAddress(Order order, CartToOrderVO vo) {
         Address address = new Address();
         address.setUuid(order.getUuid());
         address.setAddress(vo.getAddress());
@@ -130,9 +142,10 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         address.setWxId(vo.getWxId());
         address.setUpdateTime(LocalDateTime.now());
         addressService.save(address);
+        return address;
     }
 
-    private void initOrderDetails(Goods goods,BigDecimal salePrice, Order order, Long quantity, List<OrderDetail> orderDetails) {
+    private void initOrderDetails(Goods goods,BigDecimal salePrice, Order order, Long quantity,String mainPic, List<OrderDetail> orderDetails) {
         OrderDetail detail = new OrderDetail();
         detail.setUuid(GeneratorKey.getKey());
         detail.setGoodsName(goods.getName());
@@ -143,7 +156,9 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         detail.setUpdateTime(LocalDateTime.now());
         detail.setQuantity(quantity);
         detail.setPrice(salePrice);
+        detail.setMainPic(mainPic);
         orderDetails.add(detail);
+
 
     }
 

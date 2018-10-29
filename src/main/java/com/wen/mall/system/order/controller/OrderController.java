@@ -1,11 +1,14 @@
 package com.wen.mall.system.order.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wen.mall.config.bean.CodeMsg;
+import com.wen.mall.config.bean.PageResult;
 import com.wen.mall.config.bean.Result;
 import com.wen.mall.config.security.Authority;
 import com.wen.mall.exception.BussinessException;
 import com.wen.mall.security.user.entity.User;
+import com.wen.mall.system.goods.entity.Goods;
 import com.wen.mall.system.order.entity.Address;
 import com.wen.mall.system.order.entity.CartToOrderVO;
 import com.wen.mall.system.order.entity.Order;
@@ -34,6 +37,16 @@ public class OrderController {
     @Autowired
     private IOrderDetailService orderDetailService;
 
+    @Authority(roles={"admin"})
+    @GetMapping("")
+    public PageResult selectPage(@RequestParam(defaultValue = "1") Long pageNo, @RequestParam(defaultValue = "10")Long pageSize, HttpServletRequest request) {
+        Page<Order> page = new Page<>(pageNo, pageSize);
+        QueryWrapper<Order> queryWrapper= new QueryWrapperTool<Order>().getQueryWrapper(request);
+        queryWrapper.orderByDesc("update_time");
+        page = (Page<Order>) orderService.page(page, queryWrapper);
+        return PageResult.instance(page);
+    }
+
     @Authority(roles={"admin","agency","public"})
     @PostMapping("/add")
     public Result save(@RequestBody CartToOrderVO vo, HttpServletRequest request) {
@@ -51,6 +64,12 @@ public class OrderController {
     public Result list(HttpServletRequest request) {
         QueryWrapper<Order> queryWrapper = new QueryWrapperTool<Order>().getQueryWrapper(request);
         return Result.success(orderService.list(queryWrapper));
+    }
+
+    @Authority(roles={"admin"})
+    @PostMapping("/update")
+    public Result update(Order order) {
+        return Result.success(orderService.updateById(order));
     }
 
     @Authority(roles={"admin","agency","public"})

@@ -1,0 +1,63 @@
+<meta charset="UTF-8">
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+    </button>
+    <h4 class="modal-title" id="gridSystemModalLabel">修改分类</h4>
+</div>
+
+<div class="modal-body">
+    <div class="row">
+        <div class="col-md-12">
+            <form class="form-horizontal" id="addForm" action="/api/1.0/order/update" method="post">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">订单号</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="orderNo" placeholder="订单号" readonly>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">快递公司</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="expressCompany" placeholder="快递公司">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">快递单号</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="deliveryNumber" placeholder="快递单号">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">快递费用</label>
+                    <div class="col-sm-10">
+                        <input type="number" step="0.01" class="form-control" name="deliveryFee" placeholder="快递费用">
+                    </div>
+                </div>
+                <input name="uuid" type="text" id="_uuid" hidden/>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+    <button type="button" class="btn btn-primary" onclick="submitAndRefreshTable('addForm','table')">修改</button>
+</div>
+<script>
+    $(function () {
+        $('#addForm').bootstrapValidator({});
+        getDetail(objId);
+    });
+
+    function getDetail(uuid) {
+        $.get("/api/1.0/order/" + uuid, function (result) {
+            if (result.code === 200 && result.data != null) {
+                $("#addForm").setForm(result.data);
+            }
+        }, "json");
+    };
+
+
+
+
+</script>

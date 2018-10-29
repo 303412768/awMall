@@ -1,17 +1,18 @@
 <meta charset="UTF-8">
 <div class="content-box-large">
     <div class="panel-heading">
-        <div class="panel-title">用户管理列表</div>
+        <div class="panel-title">商品管理列表</div>
     </div>
     <div class="panel-body">
         <div id="toolbar">
             <div class="input-group form">
-                <input type="text" class="form-control" id="searchText" placeholder="请输入用户账号"/>
+                <input type="text" class="form-control" id="searchText" placeholder="请输入商品名称"/>
                 <span class="input-group-btn">
                     <button class="btn btn-default"
                             onclick="$('#table').bootstrapTable('refresh');">搜索</button>
+                    <button class="btn btn-success" onclick="loadPageByModal('./order/add.html')">新增</button>
                     <button class="btn btn-danger"
-                            onclick="deleteRows('table','/api/1.0/user/delete')">删除</button>
+                            onclick="deleteRows('table','/api/1.0/order/delete')">删除</button>
                 </span>
             </div>
 
@@ -21,28 +22,29 @@
     </div>
 </div>
 <script>
+
     getSelectInfo();
     function getSelectInfo() {
-        var url = "/api/1.0/baseCode/RoleInfo";
+        var url = "/api/1.0/baseCode/OrderStatus";
         $.get(url, function (result) {
             var options = result;
 
             $('#table').bootstrapTable({
                 height: $(window).height() - 260,
-                url: '/api/1.0/user',
+                url: '/api/1.0/order',
                 striped: true,                      //是否显示行间隔色
                 cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
                 pagination: true,                   //是否显示分页（*）
                 sortable: false,                     //是否启用排序
-                sortOrder: "asc",                   //排序方式
-                sortName: "username",
+                sortOrder: "desc",                   //排序方式
+                sortName: "update_time",
                 queryParams: function (params) {
                     var josn = {   //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
                         "pageSize": params.pageSize,   //页面大小
                         "pageNo": params.pageNumber,  //页码
                         "sortOrder": params.sortOrder,
                         "sortName": params.sortName,
-                        "query-like-username": $("#searchText").val()
+                        "query-like-orderNo": $("#searchText").val().toUpperCase()
 
                     };
                     return josn;
@@ -62,16 +64,17 @@
                         checkbox: true, // 显示一个勾选框
                         align: 'center' // 居中显示
                     }, {
-                        field: 'username',
-                        title: '账号',
+                        field: 'orderNo',
+                        title: '订单号',
                         sortable: true
                     }, {
-                        field: 'role',
-                        title: '角色',
+                        field: 'orderStatues',
+                        title: '订单状态',
+                        sortable: true,
                         formatter: function formatter(value, row, index) {
                             var html = "";
                             if (value != null) {
-                                html += "<select id='"+row.uuid+"' onchange='changeRole(\""+row.uuid+"\")'>";
+                                html += "<select id='"+row.uuid+"' onchange='changeOrderStatues(\""+row.uuid+"\")'>";
                                 $.each(options, function (i, obj) {
                                     if (value === obj.code) {
                                         html+="<option value='" + obj.code + "' selected>" + obj.name + "</option>";
@@ -83,25 +86,69 @@
                             }
                             return html;
                         }
+
                     }, {
-                        field: 'tel',
-                        title: '电话',
+                        field: 'total',
+                        title: '商品总价'
+                    }, {
+                        field: 'deliveryFee',
+                        title: '快递费'
+                    }, {
+                        field: 'expressCompany',
+                        title: '快递公司',
                         sortable: true
+                    }, {
+                        field: 'deliveryNumber',
+                        title: '快递号',
+                        sortable: true
+                    }, {
+                        field: 'updateTime',
+                        title: '创建时间'
+                    }, {
+                        field: 'uuid',
+                        title: '操作',
+                        formatter: function formatter(value, row, index) {
+                            var update = "<button class=\"btn btn-info\" onclick=\"updateLoadPageByModal('./order/update.html','" + value + "')\">更新快递信息</button> &nbsp;";
+                            var detail = "<a class=\"btn btn-success\" href='/view/orderDetail.html?orderNo="+value+"' target='_blank'>订单详情</a>";
+                            return update+detail;
+                        }
                     }]
             });
         }, "json");
     }
 
 
-    function changeRole(uuid) {
-        $.post("/api/1.0/user/update", {"uuid": uuid, "role": $("#" + uuid).val()}, function (result) {
+    function changeOrderStatues(orderNo) {
+        $.post("/api/1.0/order/update", {"uuid": orderNo, "orderStatues": $("#" + orderNo).val()}, function (result) {
             if (result.code === 200) {
+                toastr.success('订单号：'+orderNo +"状态更新成功！");
                 $('#table').bootstrapTable('refresh');
+            }else{
+                toastr.error("系统出现了错误！");
             }
         },"json");
     }
 
 
+
+
+
+    function openAndUp(uuid) {
+        $('#' + uuid).fileupload({
+            dataType: 'json',
+            done: function (e, data) {
+                console.log(data.result);
+                if (data.result.code === 200) {
+                    var picId = data.result.data;
+                    $.post("/api/1.0/goods/update", {"mainPicId": picId, "uuid": uuid}, function (rs) {
+                        if (rs.code === 200) {
+                            $('#table').bootstrapTable('refresh');
+                        }
+                    }, "json");
+                }
+            }
+        });
+    }
 
     $(document).keyup(function(event){
         if(event.keyCode ==13){

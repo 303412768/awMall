@@ -47,11 +47,20 @@
     </div>
     <hr/>
     <div class="row">
+        <div class="col-md-12 col-sm-12">
+            订单状态：<span class="text-danger" id="status"></span>
+        </div>
         <div class="col-md-6 col-sm-12">
             商品金额：<span class="text-danger" id="total"></span>
         </div>
         <div class="col-md-6 col-sm-12">
             快递费：<span class="text-danger" id="expressFee"></span>
+        </div>
+        <div class="col-md-6 col-sm-12">
+            快递公司：<span class="text-danger" id="deliveryCompany"></span>
+        </div>
+        <div class="col-md-6 col-sm-12">
+            快递单号：<span class="text-danger" id="deliveryNumber"></span>
         </div>
         <div class="col-md-4 col-sm-12">
             收件人姓名：<span class="" id="personName"></span>
@@ -139,6 +148,9 @@
                 if (order.orderStatues == "1") {
                     $("#tip").show();
                 }
+                $("#deliveryCompany").text(order.expressCompany == null ? "-" : order.expressCompany);
+                $("#deliveryNumber").text(order.deliveryNumber == null ? "-" : order.deliveryNumber);
+                $("#status").text(order.statusName);
             }
         }, "json");
     }

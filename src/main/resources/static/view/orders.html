@@ -41,6 +41,7 @@
             <tr>
                 <th>订单编号</th>
                 <th>订单状态</th>
+                <!--<th>快递单号</th>-->
                 <th>详细信息</th>
             </tr>
             </thead>
@@ -89,9 +90,11 @@
         $.get("/api/1.0/order/list", parms, function (result) {
             var data = result.data;
             $.each(data, function (index, obj) {
+                var deliveryNo = obj.deliveryNumber == null ? "-" : obj.deliveryNumber;
                 var html = "<tr>";
                 html += "<td>" + obj.orderNo + "</td>";
                 html += "<td>" + obj.statusName + "</td>";
+                //html += "<td>" +deliveryNo + "</td>";
                 html += "<td><a href='/view/orderDetail.html?orderNo=" + obj.orderNo + "' class='btn btn-success'>订单详情</a></td>";
                 html += "</tr>";
                 $("#tableInfo").append(html);

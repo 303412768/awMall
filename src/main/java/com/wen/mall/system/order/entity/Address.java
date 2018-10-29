@@ -48,7 +48,7 @@ public class Address implements Serializable {
     private String wxId;
 
     @ApiModelProperty(value = "订单号ID")
-    private String orderId;
+    private String orderNo;
 
     @ApiModelProperty(value = "创建人ID")
     private String userId;

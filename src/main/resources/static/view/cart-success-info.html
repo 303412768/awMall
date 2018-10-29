@@ -50,6 +50,7 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12">
+            <a id="orderDetail" href="#" class="btn btn-block btn-default">查看订单</a>
             <a href="/index.html" class="btn btn-block btn-default">返回首页</a>
 
         </div>
@@ -63,8 +64,9 @@
 
     $(function () {
         var no = getUrlParam("orderNo");
-
         $("#orderNoText").val(no);
+        $("#orderDetail").attr("href", "/view/orderDetail.html?orderNo=" + no);
+
     });
 
     //获取url中的参数

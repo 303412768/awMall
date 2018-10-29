@@ -60,5 +60,7 @@ public class OrderDetail implements Serializable {
 
     private LocalDateTime updateTime;
 
+    private String userId;
+
 
 }

@@ -14,11 +14,12 @@
         <result column="order_no" property="orderNo" />
         <result column="update_time" property="updateTime" />
         <result column="main_pic" property="mainPic" />
+        <result column="user_id" property="userId" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        uuid, goods_id, goods_name, specification, price, postInfo, quantity, order_no, update_time, main_pic
+        uuid, goods_id, goods_name, specification, price, postInfo, quantity, order_no, update_time, main_pic, user_id
     </sql>
 
 </mapper>

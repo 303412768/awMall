@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>全球购-Vivien 澳洲站 购物车</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="../bootstrap/4.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../bootstrap/4.0/css/bootstrap-grid.css">
+    <link rel="stylesheet" href="../bootstrap/4.0/css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="../bootstrap/4.0/css/bootoast.css">
+    <style>
+        .img-rounded {
+            max-height: 200px;
+        }
+
+        hr {
+            -moz-border-bottom-colors: none;
+            -moz-border-image: none;
+            -moz-border-left-colors: none;
+            -moz-border-right-colors: none;
+            -moz-border-top-colors: none;
+            border-style: solid none;
+            border-width: 1px 0;
+            margin: 18px 0;
+        }
+    </style>
+
+</head>
+<body>
+<nav class="navbar navbar-dark bg-dark  fixed-top ">
+    <a class="navbar-brand" href="/index.html">
+        首页</a>
+    <a class="navbar-brand" href="#">
+        订单管理</a>
+
+</nav>
+<div class="container" id="container" style="margin-top: 80px">
+    <div class="row">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>订单编号</th>
+                <th>订单状态</th>
+                <th>详细信息</th>
+            </tr>
+            </thead>
+            <tbody id="tableInfo">
+
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+
+<script src="../assets/js/jquery.min.js"></script>
+<script src="../bootstrap/4.0/js/bootstrap.min.js"></script>
+<script src="../assets/js/jquery.form.min.js"></script>
+<script src="../bootstrap/common/bootoast.js"></script>
+<script>
+    var user;
+    $(function () {
+        getUserInfo();
+
+    });
+
+
+    function getUserInfo() {
+        var url = "/api/1.0/user/currentUser";
+        $.get(url, function (result) {
+            console.log(result.code === 200);
+            if (result.code === 200) {
+                user = result.data;
+                if (user == null) {
+                    location.href = "/index.html";
+                    return;
+                }
+                getOrders();
+            }
+        }, "json");
+    }
+
+    function getOrders() {
+        var parms = {
+            "query-eq-userId": user.uuid,
+            "sortName": "updateTime",
+            "sortOrder": "desc"
+        };
+        $.get("/api/1.0/order/list", parms, function (result) {
+            var data = result.data;
+            $.each(data, function (index, obj) {
+                var html = "<tr>";
+                html += "<td>" + obj.orderNo + "</td>";
+                html += "<td>" + obj.statusName + "</td>";
+                html += "<td><a href='/view/orderDetail.html?orderNo=" + obj.orderNo + "' class='btn btn-success'>订单详情</a></td>";
+                html += "</tr>";
+                $("#tableInfo").append(html);
+            });
+        }, "json");
+    }
+
+
+</script>
+</body>
+</html>

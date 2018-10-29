@@ -62,13 +62,15 @@ public class QueryWrapperTool<T> {
     }
 
     private void setSort(HttpServletRequest request, QueryWrapper<T> queryWrapper) {
-        String sortName = CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, request.getParameter("sortName"));
-        String sortType = request.getParameter("sortOrder");
-        if (!StringUtils.isEmpty(sortName)) {
-            if ("desc".equals(sortType)) {
-                queryWrapper.orderByDesc(sortName);
-            } else {
-                queryWrapper.orderByAsc(sortName);
+        if (null != request.getParameter("sortName")) {
+            String sortName = CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, request.getParameter("sortName"));
+            String sortType = request.getParameter("sortOrder");
+            if (!StringUtils.isEmpty(sortName)) {
+                if ("desc".equals(sortType)) {
+                    queryWrapper.orderByDesc(sortName);
+                } else {
+                    queryWrapper.orderByAsc(sortName);
+                }
             }
         }
 

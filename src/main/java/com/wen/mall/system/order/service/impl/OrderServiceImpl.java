@@ -136,7 +136,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         address.setAddress(vo.getAddress());
         address.setIdentity(vo.getIdentity());
         address.setName(vo.getName());
-        address.setOrderId(order.getUuid());
+        address.setOrderNo(order.getUuid());
         address.setTel(vo.getTel());
         address.setUserId(order.getUserId());
         address.setWxId(vo.getWxId());
@@ -157,7 +157,9 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         detail.setQuantity(quantity);
         detail.setPrice(salePrice);
         detail.setMainPic(mainPic);
+        detail.setUserId(order.getUserId());
         orderDetails.add(detail);
+
 
 
     }

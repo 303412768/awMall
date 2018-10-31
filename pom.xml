@@ -5,7 +5,7 @@
 
     <groupId>com.wen</groupId>
     <artifactId>mall</artifactId>
-    <version>0.0.8-SNAPSHOT</version>
+    <version>0.0.10-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>mall</name>

@@ -44,7 +44,7 @@ public class OrderDetailController {
         queryWrapper.eq("user_id", user.getUuid());
         queryWrapper.orderByDesc("update_time");
         List<Address> list = addressService.list(queryWrapper);
-        if (list == null) {
+        if (list == null || list.size()==0) {
             return Result.success(null);
         }else{
             return Result.success(list.get(0));

@@ -24,30 +24,12 @@ import org.springframework.context.annotation.Bean;
 @MapperScan("com.wen.mall.**.mapper")
 public class MallApplication {
 
-    /*
-    80 与443端口同时启用
-    @Value("${http.port}")
-    private Integer port;
 
-    @Bean
-    public ServletWebServerFactory servletContainer() {
-        TomcatServletWebServerFactory tomcat = new TomcatServletWebServerFactory();
-        // 添加http
-        tomcat.addAdditionalTomcatConnectors(createStandardConnector());
-        return tomcat;
-    }
-
-        // 配置http
-    private Connector createStandardConnector() {
-        Connector connector = new Connector("org.apache.coyote.http11.Http11NioProtocol");
-        connector.setPort(port);
-        return connector;
-    }*/
 
     /**
      * 访问80端口跳转433
     * */
-    @Bean
+  /*  @Bean
     public Connector connector(){
         Connector connector=new Connector("org.apache.coyote.http11.Http11NioProtocol");
         connector.setScheme("http");
@@ -72,7 +54,7 @@ public class MallApplication {
         };
         tomcat.addAdditionalTomcatConnectors(connector);
         return tomcat;
-    }
+    }*/
 
 
 

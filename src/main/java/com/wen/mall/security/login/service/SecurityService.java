@@ -1,12 +1,15 @@
 package com.wen.mall.security.login.service;
 
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.wen.mall.exception.BussinessException;
 import com.wen.mall.security.user.entity.User;
 import com.wen.mall.security.user.service.IUserService;
+import com.wen.mall.tools.GeneratorKey;
 import com.wen.mall.tools.SecurityTool;
 import com.wen.mall.tools.StaticInfo;
+import com.wen.mall.tools.WxHelper;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +19,7 @@ import javax.servlet.http.HttpSession;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -63,5 +67,25 @@ public class SecurityService {
         // BigInteger函数则将8位的字符串转换成16位hex值，用字符串来表示；得到字符串形式的hash值
         password = new BigInteger(1, md.digest()).toString(16);
         System.out.println(password);
+    }
+
+
+    public User wxLogin(String code , String encryptedData,String iv) {
+        String unionid = WxHelper.getUnionIdByMin(encryptedData, iv, code);
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("wx_uuid", unionid);
+        User user=userService.getOne(queryWrapper);
+        //判断是不是新用户，如果null说明为新用户
+        if (null == user) {
+            user = new User();
+            user.setUuid(GeneratorKey.getKey());
+            user.setUsername(user.getUuid());
+            user.setPassword(SecurityTool.strToMD5(user.getUuid()));
+            user.setUpdateTime(LocalDateTime.now());
+            user.setWxUuid(unionid);
+            user.setRole("public");
+            userService.save(user);
+        }
+        return user;
     }
 }

@@ -37,4 +37,14 @@ public class SecurityController {
         return Result.success();
     }
 
+    @GetMapping("/wx/login")
+    public Result wxLogin(HttpServletRequest request,String code,String encryptedData,String iv) {
+        User user = securityService.wxLogin(code,encryptedData,iv);
+        if (null == user) {
+            return Result.error(CodeMsg.USER_NOT_EXSIST);
+        }
+        securityService.setUserToSession(user, request);
+        return Result.success(user);
+    }
+
 }

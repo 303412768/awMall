@@ -38,8 +38,8 @@ public class SecurityController {
     }
 
     @GetMapping("/wx/login")
-    public Result wxLogin(HttpServletRequest request,String code,String encryptedData,String iv) {
-        User user = securityService.wxLogin(code,encryptedData,iv);
+    public Result wxMinLogin(HttpServletRequest request,String code,String encryptedData,String iv) {
+        User user = securityService.wxMinLogin(code,encryptedData,iv);
         if (null == user) {
             return Result.error(CodeMsg.USER_NOT_EXSIST);
         }

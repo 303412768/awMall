@@ -70,8 +70,11 @@ public class SecurityService {
     }
 
 
-    public User wxLogin(String code , String encryptedData,String iv) {
+    public User wxMinLogin(String code , String encryptedData,String iv) {
         String unionid = WxHelper.getUnionIdByMin(encryptedData, iv, code);
+        if (StringUtils.isBlank(unionid)) {
+            return null;
+        }
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("wx_uuid", unionid);
         User user=userService.getOne(queryWrapper);

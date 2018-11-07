@@ -32,7 +32,6 @@ public class SecurityService {
 
 
     public User validUser(String username, String password) {
-        System.out.println("aaa");
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("username", username);
         queryWrapper.eq("password", SecurityTool.strToMD5(password));

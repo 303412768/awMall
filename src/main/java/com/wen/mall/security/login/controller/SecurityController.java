@@ -1,5 +1,6 @@
 package com.wen.mall.security.login.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.wen.mall.config.bean.CodeMsg;
 import com.wen.mall.config.bean.Result;
 import com.wen.mall.security.login.service.SecurityService;
@@ -44,7 +45,9 @@ public class SecurityController {
             return Result.error(CodeMsg.USER_NOT_EXSIST);
         }
         securityService.setUserToSession(user, request);
-        return Result.success(user);
+        JSONObject json = (JSONObject) JSONObject.toJSON(user);
+        json.put("sessionId", request.getSession().getId());
+        return Result.success(json);
     }
 
 }

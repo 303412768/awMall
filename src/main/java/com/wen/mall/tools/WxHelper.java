@@ -17,8 +17,8 @@ import java.util.Map;
 
 public class WxHelper {
 
-    private static final String APPID = "wx76d1172b0b1b153d";
-    private static final String SECRET = "e2f5645902900cb8c0a327cda63b8b0b";
+    private static final String APPID = "wxf80d992d5f27c71d";
+    private static final String SECRET = "8156841942190f685c464f328eb6ecee";
     private static final String GET_OPEN_ID_URL = "https://api.weixin.qq.com/sns/jscode2session";
     private static final String GET_ACCESS_TOKEN_URL = "https://api.weixin.qq.com/cgi-bin/token";
     private static final String GET_UNION_ID_URL = "https://api.weixin.qq.com/cgi-bin/user/info";
